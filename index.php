@@ -11,154 +11,134 @@ $bot = new \LINE\LINEBot($httpClient, ['channelSecret' => getenv('CHANNEL_SECRET
 $signature = $_SERVER['HTTP_' . \LINE\LINEBot\Constant\HTTPHeader::LINE_SIGNATURE];
 
 // 署名が正当かチェック。正当であればリクエストをパースし配列へ
-// 不正であれば例外の内容を出力
-try {
-  $events = $bot->parseEventRequest(file_get_contents('php://input'), $signature);
-} catch(\LINE\LINEBot\Exception\InvalidSignatureException $e) {
-  error_log('parseEventRequest failed. InvalidSignatureException => '.var_export($e, true));
-} catch(\LINE\LINEBot\Exception\UnknownEventTypeException $e) {
-  error_log('parseEventRequest failed. UnknownEventTypeException => '.var_export($e, true));
-} catch(\LINE\LINEBot\Exception\UnknownMessageTypeException $e) {
-  error_log('parseEventRequest failed. UnknownMessageTypeException => '.var_export($e, true));
-} catch(\LINE\LINEBot\Exception\InvalidEventRequestException $e) {
-  error_log('parseEventRequest failed. InvalidEventRequestException => '.var_export($e, true));
-}
-
+$events = $bot->parseEventRequest(file_get_contents('php://input'), $signature);
 // 配列に格納された各イベントをループで処理
 foreach ($events as $event) {
-  // MessageEventクラスのインスタンスでなければ処理をスキップ
-  if (!($event instanceof \LINE\LINEBot\Event\MessageEvent)) {
-    error_log('Non message event has come');
+  // イベントがPostbackEventクラスのインスタンスであれば
+  if ($event instanceof \LINE\LINEBot\Event\PostbackEvent) {
+    // テキストを返信し次のイベントの処理へ
+    replyTextMessage($bot, $event->getReplyToken(), 'Postback受信「' . $event->getPostbackData() . '」');
     continue;
   }
-  // TextMessageクラスのインスタンスの場合
-  if ($event instanceof \LINE\LINEBot\Event\MessageEvent\TextMessage) {
-    // 入力されたテキストを取得
-    $location = $event->getText();
-  }
-  // LocationMessageクラスのインスタンスの場合
-  else if ($event instanceof \LINE\LINEBot\Event\MessageEvent\LocationMessage) {
-    // Google APIにアクセスし緯度経度から住所を取得
-    $jsonString = file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?language=ja&latlng=' . $event->getLatitude() . ',' . $event->getLongitude());
-    // 文字列を連想配列に変換
-    $json = json_decode($jsonString, true);
-    // 住所情報のみを取り出し
-    $addressComponentArray = $json['results'][0]['address_components'];
-    // 要素をループで処理
-    foreach($addressComponentArray as $addressComponent) {
-      // 県名を取得
-      if(in_array('administrative_area_level_1', $addressComponent['types'])) {
-        $prefName = $addressComponent['long_name'];
-        break;
-      }
-    }
-    // 東京と大阪の場合他県と内容が違うので特別な処理
-    if($prefName == '東京都') {
-      $location = '東京';
-    } else if($prefName == '大阪府') {
-      $location = '大阪';
-    // それ以外なら
-    } else {
-      // 要素をループで処理
-      foreach($addressComponentArray as $addressComponent) {
-        // 市名を取得
-        if(in_array('locality', $addressComponent['types']) && !in_array('ward', $addressComponent['types'])) {
-          $location = $addressComponent['long_name'];
-          break;
-        }
-      }
-    }
-  }
-
-  // 住所ID用変数
-  $locationId;
-  // XMLファイルをパースするクラス
-  $client = new Goutte\Client();
-  // XMLファイルを取得
-  $crawler = $client->request('GET', 'http://weather.livedoor.com/forecast/rss/primary_area.xml');
-  // 市名のみを抽出しユーザーが入力した市名と比較
-  foreach ($crawler->filter('channel ldWeather|source pref city') as $city) {
-    // 一致すれば住所IDを取得し処理を抜ける
-    if($city->getAttribute('title') == $location || $city->getAttribute('title') . "市" == $location) {
-      $locationId = $city->getAttribute('id');
-      break;
-    }
-  }
-  // 一致するものが無ければ
-  if(empty($locationId)) {
-    // 位置情報が送られた時は県名を取得済みなのでそれを代入
-    if ($event instanceof \LINE\LINEBot\Event\MessageEvent\LocationMessage) {
-      $location = $prefName;
-    }
-    // 候補の配列
-    $suggestArray = array();
-    // 県名を抽出しユーザーが入力した県名と比較
-    foreach ($crawler->filter('channel ldWeather|source pref') as $pref) {
-      // 一致すれば
-      if(strpos($pref->getAttribute('title'), $location) !== false) {
-        // その県に属する市を配列に追加
-        foreach($pref->childNodes as $child) {
-          if($child instanceof DOMElement && $child->nodeName == 'city') {
-            array_push($suggestArray, $child->getAttribute('title'));
-          }
-        }
-        break;
-      }
-    }
-    // 候補が存在する場合
-    if(count($suggestArray) > 0) {
-      // アクションの配列
-      $actionArray = array();
-      //候補を全てアクションにして追加
-      foreach($suggestArray as $city) {
-        array_push($actionArray, new LINE\LINEBot\TemplateActionBuilder\MessageTemplateActionBuilder ($city, $city));
-      }
-      // Buttonsテンプレートを返信
-      $builder = new \LINE\LINEBot\MessageBuilder\TemplateMessageBuilder(
-        '見つかりませんでした。',
-        new \LINE\LINEBot\MessageBuilder\TemplateBuilder\ButtonTemplateBuilder ('見つかりませんでした。', 'もしかして？', null, $actionArray));
-        $bot->replyMessage($event->getReplyToken(), $builder
-      );
-    }
-    // 候補が存在しない場合
-    else {
-      // 正しい入力方法を返信
-      replyTextMessage($bot, $event->getReplyToken(), '入力された地名が見つかりませんでした。市を入力してください。');
-    }
-    // 以降の処理はスキップ
-    continue;
-  }
-
-  // 住所IDが取得できた場合、その住所の天気情報を取得
-  $jsonString = file_get_contents('http://weather.livedoor.com/forecast/webservice/json/v1?city=' . $locationId);
-  // 文字列を連想配列に変換
-  $json = json_decode($jsonString, true);
-
-  // 形式を指定して天気の更新時刻をパース
-  $date = date_parse_from_format('Y-m-d\TH:i:sP', $json['description']['publicTime']);
-
-  // 予報が晴れの場合
-  if($json['forecasts'][0]['telop'] == '晴れ') {
-    // 天気情報、更新時刻、晴れのスタンプをまとめて送信
-    replyMultiMessage($bot, $event->getReplyToken(),
-      new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($json['description']['text'] . PHP_EOL . PHP_EOL .
-        '最終更新：' . sprintf('%s月%s日%s時%s分', $date['month'], $date['day'], $date['hour'], $date['minute'])),
-      new \LINE\LINEBot\MessageBuilder\StickerMessageBuilder(2, 513)
+  // テキストを返信
+  //$bot->replyText($event->getReplyToken(), 'TextMessage');
+  // テキストを返信
+  //replyTextMessage($bot, $event->getReplyToken(), 'TextMessage');
+  // 画像を返信
+  //replyImageMessage($bot, $event->getReplyToken(), 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/original.jpg', 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/preview.jpg');
+  // 位置情報を返信
+  //replyLocationMessage($bot, $event->getReplyToken(), 'LINE', '東京都渋谷区渋谷2-21-1 ヒカリエ27階', 35.659025, 139.703473);
+  // スタンプを返信
+  //replyStickerMessage($bot, $event->getReplyToken(), 1, 1);
+  // 動画を返信
+  //replyVideoMessage($bot, $event->getReplyToken(),
+  //  'https://' . $_SERVER['HTTP_HOST'] . '/videos/sample.mp4',
+  //  'https://' . $_SERVER['HTTP_HOST'] . '/videos/sample_preview.jpg');
+  // オーディファイルを返信
+  //replyAudioMessage($bot, $event->getReplyToken(), 'https://' . $_SERVER['HTTP_HOST'] . '/audios/sample.m4a', 6000);
+  /*
+  // 複数のメッセージをまとめて返信
+  replyMultiMessage($bot, $event->getReplyToken(),
+    new \LINE\LINEBot\MessageBuilder\TextMessageBuilder('TextMessage'),
+    new \LINE\LINEBot\MessageBuilder\ImageMessageBuilder('https://' . $_SERVER['HTTP_HOST'] . '/imgs/original.jpg', 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/preview.jpg'),
+    new \LINE\LINEBot\MessageBuilder\LocationMessageBuilder('LINE', '東京都渋谷区渋谷2-21-1 ヒカリエ27階', 35.659025, 139.703473),
+    new \LINE\LINEBot\MessageBuilder\StickerMessageBuilder(1, 1)
+  );
+  */
+  /*
+  // Buttonsテンプレートメッセージを返信
+  replyButtonsTemplate($bot,
+    $event->getReplyToken(),
+    'お天気お知らせ - 今日は天気予報は晴れです',
+    'https://' . $_SERVER['HTTP_HOST'] . '/imgs/template.jpg',
+    'お天気お知らせ',
+    '今日は天気予報は晴れです',
+    // タップ時、テキストをユーザーに発言させるアクション
+    new LINE\LINEBot\TemplateActionBuilder\MessageTemplateActionBuilder (
+      '明日の天気', 'tomorrow'),
+    // タップ時、テキストをBotに送信するアクション(トークには表示されない)
+    new LINE\LINEBot\TemplateActionBuilder\PostbackTemplateActionBuilder (
+      '週末の天気', 'weekend'),
+    // タップ時、URLを開くアクション
+    new LINE\LINEBot\TemplateActionBuilder\UriTemplateActionBuilder (
+      'Webで見る', 'http://google.jp')
+  );
+  */
+  /*
+  // Confirmテンプレートメッセージを返信
+  replyConfirmTemplate($bot,
+    $event->getReplyToken(),
+    'Webで詳しく見ますか？',
+    'Webで詳しく見ますか？',
+    new LINE\LINEBot\TemplateActionBuilder\UriTemplateActionBuilder (
+      '見る', 'http://google.jp'),
+    new LINE\LINEBot\TemplateActionBuilder\MessageTemplateActionBuilder (
+      '見ない', 'ignore')
+  );
+  */
+  /*
+  // Carouselテンプレートメッセージを返信
+  // ダイアログの配列
+  $columnArray = array();
+  for($i = 0; $i < 5; $i++) {
+    // アクションの配列
+    $actionArray = array();
+    array_push($actionArray, new LINE\LINEBot\TemplateActionBuilder\MessageTemplateActionBuilder (
+      'ボタン' . $i . '-' . 1, 'c-' . $i . '-' . 1));
+    array_push($actionArray, new LINE\LINEBot\TemplateActionBuilder\MessageTemplateActionBuilder (
+      'ボタン' . $i . '-' . 2, 'c-' . $i . '-' . 2));
+    array_push($actionArray, new LINE\LINEBot\TemplateActionBuilder\MessageTemplateActionBuilder (
+      'ボタン' . $i . '-' . 3, 'c-' . $i . '-' . 3));
+    // CarouselColumnTemplateBuilderの引数はタイトル、本文、
+    // 画像URL、アクションの配列
+    $column = new \LINE\LINEBot\MessageBuilder\TemplateBuilder\CarouselColumnTemplateBuilder (
+      ($i + 1) . '日後の天気',
+      '晴れ',
+      'https://' . $_SERVER['HTTP_HOST'] .  '/imgs/template.jpg',
+      $actionArray
     );
-  // 雨の場合
-  } else if($json['forecasts'][0]['telop'] == '雨') {
-    replyMultiMessage($bot, $event->getReplyToken(),
-      // 天気情報、更新時刻、雨のスタンプをまとめて送信
-      new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($json['description']['text'] . PHP_EOL . PHP_EOL .
-        '最終更新：' . sprintf('%s月%s日%s時%s分', $date['month'], $date['day'], $date['hour'], $date['minute'])),
-      new \LINE\LINEBot\MessageBuilder\StickerMessageBuilder(2, 507)
-    );
-  // 他
-  } else {
-    // 天気情報と更新時刻をまとめて返信
-    replyTextMessage($bot, $event->getReplyToken(), $json['description']['text'] . PHP_EOL . PHP_EOL .
-      '最終更新：' . sprintf('%s月%s日%s時%s分', $date['month'], $date['day'], $date['hour'], $date['minute']));
+    // 配列に追加
+    array_push($columnArray, $column);
   }
+  replyCarouselTemplate($bot, $event->getReplyToken(),'今後の天気予報', $columnArray);
+  */
+  /*
+  // ユーザーから送信された画像ファイルを取得し、サーバーに保存する
+  // イベントがImageMessage型であれば
+  if ($event instanceof \LINE\LINEBot\Event\MessageEvent\ImageMessage) {
+    // イベントのコンテンツを取得
+    $content = $bot->getMessageContent($event->getMessageId());
+    // コンテンツヘッダーを取得
+    $headers = $content->getHeaders();
+    // 画像の保存先フォルダ
+    $directory_path = 'tmp';
+    // 保存するファイル名
+    $filename = uniqid();
+    // コンテンツの種類を取得
+    $extension = explode('/', $headers['Content-Type'])[1];
+    // 保存先フォルダが存在しなければ
+    if(!file_exists($directory_path)) {
+      // フォルダを作成
+      if(mkdir($directory_path, 0777, true)) {
+        // 権限を変更
+        chmod($directory_path, 0777);
+      }
+    }
+    // 保存先フォルダにコンテンツを保存
+    file_put_contents($directory_path . '/' . $filename . '.' . $extension, $content->getRawBody());
+    // 保存したファイルのURLを返信
+    replyTextMessage($bot, $event->getReplyToken(), 'http://' . $_SERVER['HTTP_HOST'] . '/' . $directory_path. '/' . $filename . '.' . $extension);
+  }
+  */
+  // ユーザーのプロフィールを取得しメッセージを作成後返信
+  $profile = $bot->getProfile($event->getUserId())->getJSONDecodedBody();
+  $bot->replyMessage($event->getReplyToken(),
+    (new \LINE\LINEBot\MessageBuilder\MultiMessageBuilder())
+      ->add(new \LINE\LINEBot\MessageBuilder\TextMessageBuilder('現在のプロフィールです。'))
+      ->add(new \LINE\LINEBot\MessageBuilder\TextMessageBuilder('表示名：' . $profile['displayName']))
+      ->add(new \LINE\LINEBot\MessageBuilder\TextMessageBuilder('画像URL：' . $profile['pictureUrl']))
+      ->add(new \LINE\LINEBot\MessageBuilder\TextMessageBuilder('ステータスメッセージ：' . $profile['statusMessage']))
+  );
 }
 
 // テキストを返信。引数はLINEBot、返信先、テキスト
