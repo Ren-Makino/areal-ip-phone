@@ -25,16 +25,6 @@ try {
 }
 
 foreach ($events as $event) {
-  // MessageEventクラスのインスタンスでなければ処理をスキップ
-  if (!($event instanceof \LINE\LINEBot\Event\MessageEvent)) {
-    error_log('Non message event has come');
-    continue;
-  }
-
-  if ($event instanceof \LINE\LINEBot\Event\MessageEvent\TextMessage) {
-    // 入力されたテキストを取得
-    $location = $event->getText();
-  }
   // LocationMessageクラスのインスタンスの場合
   if ($event instanceof \LINE\LINEBot\Event\MessageEvent\TextMessage) {
     // 入力されたテキストを取得
