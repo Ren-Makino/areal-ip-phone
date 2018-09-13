@@ -43,7 +43,7 @@ foreach ($events as $event) {
   }
   $locationId
   $client = new Goutte\Client();
-    
+
   // 住所ID用変数
   $locationId;
   // XMLファイルをパースするクラス
@@ -79,7 +79,7 @@ foreach ($events as $event) {
         break;
       }
     }
-    // 候補が存在する場合
+    // 候補が存在する場合 //
     if(count($suggestArray) > 0) {
       // アクションの配列
       $actionArray = array();
