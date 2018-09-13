@@ -36,9 +36,14 @@ foreach ($events as $event) {
     $location = $event->getText();
   }
   // LocationMessageクラスのインスタンスの場合
+  if ($event instanceof \LINE\LINEBot\Event\MessageEvent\TextMessage) {
+    // 入力されたテキストを取得
+    $location = $event->getText();
+  }
+  // LocationMessageクラスのインスタンスの場合
   else if ($event instanceof \LINE\LINEBot\Event\MessageEvent\LocationMessage) {
     //LocationMessageの内容を返す
-    replyTextMessage($bot, $event->getReplyToken(), $event->getAddress() . '[' . $event->getLatitude() > ',' . $event->getLongitude() . ']');
+    replyTextMessage($bot, $event->getReplyToken(), $event->getAddress() .'[' . $event->getLatitude() . ',' . $event->getLongitude() .']');
     continue;
   }
   $locationId
