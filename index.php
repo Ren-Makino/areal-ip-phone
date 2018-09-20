@@ -73,6 +73,25 @@ foreach ($events as $event) {
           break;
         }
       }
+      // 候補が存在する場合
+      if(count($suggestArray) > 0) {
+        // アクションの配列
+        $actionArray = array();
+        //候補を全てアクションにして追加
+        foreach($suggestArray as $city) {
+          array_push($actionArray, new LINE\LINEBot\TemplateActionBuilder\MessageTemplateActionBuilder ($city, $city));
+        }
+        // Buttonsテンプレートを返信
+        $builder = new \LINE\LINEBot\MessageBuilder\TemplateMessageBuilder(
+          '見つかりませんでした。',
+          new \LINE\LINEBot\MessageBuilder\TemplateBuilder\ButtonTemplateBuilder ('見つかりませんでした。', 'もしかして？', null, $actionArray));
+          $bot->replyMessage($event->getReplyToken(), $builder
+        );
+      }
+      // 候補が存在しない場合
+      else {
+        // 正しい入力方法を返信
+        replyTextMessage($bot, $event->getReplyToken(), '入力された地名が見つかりませんでした。市を入力してください。');
     }
 }
 
