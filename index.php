@@ -93,6 +93,8 @@ foreach ($events as $event) {
         // 正しい入力方法を返信
         replyTextMessage($bot, $event->getReplyToken(), '入力された地名が見つかりませんでした。市を入力してください。');
     }
+    // 以降の処理はスキップ
+    continue;
 }
 
 // テキストを返信。引数はLINEBot、返信先、テキスト
