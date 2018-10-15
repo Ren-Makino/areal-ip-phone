@@ -38,8 +38,8 @@ foreach ($events as $event) {
   }
   if(preg_match('/地震/',$event->getText())){
     $bot->replyText($event->getReplyToken(),'キーワード「地震」に関する情報を表示します。以下の情報が見つかりました。'."\n".'http://www.jma.go.jp/jp/quake/');
-  }else if(preg_match('/災害情報/',$event->getText())){
-    $bot->replyText($event->getReplyToken(),'キーワード「災害情報」に関する情報を表示します。');
+  }else if(preg_match('/被災状況/',$event->getText())){
+    $bot->replyText($event->getReplyToken(),'キーワード「被災状況」に関する情報を表示します。');
     replyImageMessage($bot, $event->getReplyToken(), 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/original.jpg', 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/preview.jpg');
   }
 }
