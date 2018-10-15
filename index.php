@@ -36,13 +36,7 @@ foreach ($events as $event) {
     error_log('Non text message has come');
     continue;
   }
-  //入力されたテキストを取得
-  $userMessage = $event->getText();
-
-  if(preg_match("地震",$userMassage)){
-    //$bot->replyText($event->getReplyToken(),"キーワード「地震」に関する情報を表示します。以下の情報が見つかりました。<br>http://www.jma.go.jp/jp/quake/");
-    $bot->replyText($event->getReplyToken(),"テスト");
-  }
+  $bot->replyText($event->getReplyToken(),$event->getText());
 }
 
 // テキストを返信。引数はLINEBot、返信先、テキスト
