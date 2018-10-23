@@ -12,8 +12,8 @@ $signature = $_SERVER['HTTP_' . \LINE\LINEBot\Constant\HTTPHeader::LINE_SIGNATUR
 
 $suffId = 0;
 $phoneNum = array(111,222);
-$message = array('無事です。','困っています。');
-$anpiData = array($phoneNum,$message);
+//$message = array('無事です。','困っています。');
+//$anpiData = array($phoneNum,$message);
 
 
 // 署名が正当かチェック。正当であればリクエストをパースし配列へ
@@ -52,7 +52,7 @@ foreach ($events as $event) {
     ++$suffId;
   }elseif(preg_match('/確認/',$event->getText())){
     //$phoneNum=explode(',',$event->getText());
-    $bot->replyText($event->getReplyToken(),$anpiData[1][0]);
+    $bot->replyText($event->getReplyToken(),$phoneNum[0]);
 }
 
 // テキストを返信。引数はLINEBot、返信先、テキスト
