@@ -11,8 +11,10 @@ $bot = new \LINE\LINEBot($httpClient, ['channelSecret' => getenv('CHANNEL_SECRET
 $signature = $_SERVER['HTTP_' . \LINE\LINEBot\Constant\HTTPHeader::LINE_SIGNATURE];
 
 $suffId = 0;
-$anpiData = array();
-$anpiDate[111]['message']='無事です。'
+$phoneNum = array(111,222);
+$message = array('無事です。','困っています。')
+$anpiData = array($phoneNum,$message);
+
 
 // 署名が正当かチェック。正当であればリクエストをパースし配列へ
 // 不正であれば例外の内容を出力
@@ -50,7 +52,8 @@ foreach ($events as $event) {
     ++$suffId;
   }elseif(preg_match('/確認/',$event->getText())){
     //$phoneNum=explode(',',$event->getText());
-    $bot->replyText($event->getReplyToken(),$anpiData[111]['message']);
+    $bot->replyText($event->getReplyToken(),$anpiData[0][0]);
+
 }
 
 // テキストを返信。引数はLINEBot、返信先、テキスト
