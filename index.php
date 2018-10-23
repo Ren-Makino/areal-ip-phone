@@ -10,8 +10,8 @@ $bot = new \LINE\LINEBot($httpClient, ['channelSecret' => getenv('CHANNEL_SECRET
 // LINE Messaging APIがリクエストに付与した署名を取得
 $signature = $_SERVER['HTTP_' . \LINE\LINEBot\Constant\HTTPHeader::LINE_SIGNATURE];
 
-$suffId = 0;
-$phoneNum = array(111,222);
+//$suffId = 0;
+//$phoneNum = array(111,222);
 //$message = array('無事です。','困っています。');
 //$anpiData = array($phoneNum,$message);
 
@@ -47,7 +47,12 @@ foreach ($events as $event) {
   }elseif(preg_match('/被災状況/',$event->getText())){
     replyImageMessage($bot, $event->getReplyToken(), 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/original.jpg', 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/preview.jpg');
     $bot->replyText($event->getReplyToken(),'キーワード「被災状況」に関する情報を表示します。');
-
+  }elseif(preg_match('/登録/',$event->getText())){
+    $anpiData($suffId)=explode(',',$event->getText());
+    ++$suffId;
+  }elseif(preg_match('/確認/',$event->getText())){
+    //$phoneNum=explode(',',$event->getText());
+    $bot->replyText($event->getReplyToken(),$phoneNum[0]);
 }
 
 // テキストを返信。引数はLINEBot、返信先、テキスト
