@@ -53,6 +53,7 @@ foreach ($events as $event) {
   }elseif(preg_match('/確認/',$event->getText())){
     //$phoneNum=explode(',',$event->getText());
     $bot->replyText($event->getReplyToken(),$phoneNum[0]);
+  }
 }
 
 // テキストを返信。引数はLINEBot、返信先、テキスト
