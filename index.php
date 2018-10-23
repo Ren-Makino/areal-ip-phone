@@ -12,7 +12,7 @@ $signature = $_SERVER['HTTP_' . \LINE\LINEBot\Constant\HTTPHeader::LINE_SIGNATUR
 
 $suffId = 0;
 $phoneNum = array(111,222);
-$message = array('無事です。','困っています。')
+$message = array('無事です。','困っています。');
 $anpiData = array($phoneNum,$message);
 
 
