@@ -10,14 +10,9 @@ $bot = new \LINE\LINEBot($httpClient, ['channelSecret' => getenv('CHANNEL_SECRET
 // LINE Messaging APIがリクエストに付与した署名を取得
 $signature = $_SERVER['HTTP_' . \LINE\LINEBot\Constant\HTTPHeader::LINE_SIGNATURE];
 
-
-class Anpi{
-  public $suffererId;
-  public $phoneNum;
-  public $message;
-
-  //function __construct(){}
-}
+$suffId = 0;
+$anpiData = array();
+$anpiDate[111]['message']='無事です。'
 
 // 署名が正当かチェック。正当であればリクエストをパースし配列へ
 // 不正であれば例外の内容を出力
@@ -47,14 +42,15 @@ foreach ($events as $event) {
   }
   if(preg_match('/地震/',$event->getText())){
     $bot->replyText($event->getReplyToken(),'キーワード「地震」に関する情報を表示します。以下の情報が見つかりました。'."\n".'http://www.jma.go.jp/jp/quake/');
-    $bot->replyText($event->getReplyToken(),'キーワード「地震」に関する情報を表示します。以下の情報が見つかりました。'."\n".'http://www.jma.go.jp/jp/quake/');
   }elseif(preg_match('/被災状況/',$event->getText())){
     replyImageMessage($bot, $event->getReplyToken(), 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/original.jpg', 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/preview.jpg');
     $bot->replyText($event->getReplyToken(),'キーワード「被災状況」に関する情報を表示します。');
   }elseif(preg_match('/登録/',$event->getText())){
-
-  }
-
+    $anpiData($suffId)=explode(',',$event->getText());
+    ++$suffId;
+  }elseif(preg_match('/確認/',$event->getText())){
+    //$phoneNum=explode(',',$event->getText());
+    $bot->replyText($event->getReplyToken(),$anpiData[111]['message']);
 }
 
 // テキストを返信。引数はLINEBot、返信先、テキスト
