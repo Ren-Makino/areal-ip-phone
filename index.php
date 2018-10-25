@@ -42,7 +42,7 @@ foreach ($events as $event) {
     error_log('Non text message has come');
     continue;
   }
-  if(preg_match('/地震/',$event->getText())){
+  if(preg_match('/地震/',$event->getText()) == 1){
     //$bot->replyText($event->getReplyToken(),'キーワード「地震」に関する情報を表示します。以下の情報が見つかりました。'."\n".'http://www.jma.go.jp/jp/quake/');
     $bot->replyText($event->getReplyToken(),'テスト');
     $bot->replyText($event->getReplyToken(),'あ');
