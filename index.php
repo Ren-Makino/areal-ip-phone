@@ -51,6 +51,7 @@ foreach ($events as $event) {
     $anpiData($suffId)=explode(',',$event->getText());
     ++$suffId;
     $bot->replyText($event->getReplyToken(),$suffId);
+  }
 }
 
 // テキストを返信。引数はLINEBot、返信先、テキスト
