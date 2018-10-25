@@ -50,6 +50,7 @@ foreach ($events as $event) {
   }elseif(preg_match('/登録/',$event->getText())){
     $anpiData($suffId)=explode(',',$event->getText());
     ++$suffId;
+    $bot->replyText($event->getReplyToken(),$suffId);
 }
 
 // テキストを返信。引数はLINEBot、返信先、テキスト
