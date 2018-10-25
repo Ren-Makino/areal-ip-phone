@@ -48,7 +48,7 @@ foreach ($events as $event) {
     $file_name = 'file.txt';
     touch($file_name);
     $file_flag=file_exists($file_name);
-    replyTextMessage($bot,$event->getReplyToken(),'テスト'.$file_flag);
+    replyTextMessage($bot,$event->getReplyToken(),'テスト');
   }elseif(preg_match('/被災状況/',$event->getText())){
     replyImageMessage($bot, $event->getReplyToken(), 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/original.jpg', 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/preview.jpg');
     $bot->replyText($event->getReplyToken(),'キーワード「被災状況」に関する情報を表示します。');
