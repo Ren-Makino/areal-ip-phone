@@ -44,7 +44,7 @@ foreach ($events as $event) {
   }
   if(preg_match('/地震/',$event->getText())){
     //$bot->replyText($event->getReplyToken(),'キーワード「地震」に関する情報を表示します。以下の情報が見つかりました。'."\n".'http://www.jma.go.jp/jp/quake/');
-    $suffId=$suffId+1;
+    ++$suffId;
     $bot->replyText($event->getReplyToken(),'テスト'.$suffId);
   }elseif(preg_match('/被災状況/',$event->getText())){
     replyImageMessage($bot, $event->getReplyToken(), 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/original.jpg', 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/preview.jpg');
