@@ -55,9 +55,9 @@ foreach ($events as $event) {
     fputs($fp,mb_substr($event->getText(),17));
     /*$fp=fopen($file_name,'r');
     $txt=fgets($fp);
-    replyTextMessage($bot,$event->getReplyToken(),$txt);
-    fclose($fp);*/
-    replyTextMessage($bot,$event->getReplyToken(),'メッセージを登録しました。' . "\n" . '電話番号：' . $file_name . "\n" . 'メッセージ：' . mb_substr($event->getText(),17));
+    replyTextMessage($bot,$event->getReplyToken(),$txt);*/
+    fclose($fp);
+    replyTextMessage($bot,$event->getReplyToken(),'メッセージを登録しました。' . "\n" . 'TEL：' . mb_substr($event->getText(),3,13) . "\n" . 'メッセージ：' . mb_substr($event->getText(),17));
   }elseif(preg_match('/確認/',$event->getText())){
     $file_name = mb_substr($event->getText(),3,13).'.txt';
     //replyTextMessage($bot,$event->getReplyToken(),$file_name);
