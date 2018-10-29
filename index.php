@@ -62,6 +62,7 @@ foreach ($events as $event) {
     $fp=fopen($file_name,'r');
     $txt=fgets($fp);
     replyTextMessage($bot,$event->getReplyToken(),$txt);
+  }
 }
 
 // テキストを返信。引数はLINEBot、返信先、テキスト
