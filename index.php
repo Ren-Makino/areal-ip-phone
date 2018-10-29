@@ -44,11 +44,11 @@ foreach ($events as $event) {
   }
   if(preg_match('/地震/',$event->getText())){
     //$bot->replyText($event->getReplyToken(),'キーワード「地震」に関する情報を表示します。以下の情報が見つかりました。'."\n".'http://www.jma.go.jp/jp/quake/');
-    replyTextMessage($bot,$event->getReplyToken(),'start');
-    replyTextMessage($bot,$event->getReplyToken(),'テスト');
+    replyMultiMessage($bot,$event->getReplyToken(),new \LINE\LINEBot\MessageBuilder\TextMessageBuilder('テスト１'),new \LINE\LINEBot\MessageBuilder\TextMessageBuilder('テスト２'));
     $file_name = 'file.txt';
     touch($file_name);
     $file_flag=file_exists($file_name);
+    replyMultiMessage($bot,$event->getReplyToken(),new \LINE\LINEBot\MessageBuilder\TextMessageBuilder('テスト3'));
   }elseif(preg_match('/被災状況/',$event->getText())){
     replyImageMessage($bot, $event->getReplyToken(), 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/original.jpg', 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/preview.jpg');
     $bot->replyText($event->getReplyToken(),'キーワード「被災状況」に関する情報を表示します。');
