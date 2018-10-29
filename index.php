@@ -52,7 +52,7 @@ foreach ($events as $event) {
     $file_name = mb_substr($event->getText(),3,13).'.txt';
     touch($file_name);
     $fp=fopen($file_name,'w');
-    fputs($fp,mb_strstr($event->getText(),'登録,',false));
+    fputs($fp,mb_substr($event->getText(),3,20));
     $fp=fopen($file_name,'r');
     $txt=fgets($fp);
     replyTextMessage($bot,$event->getReplyToken(),$txt);
