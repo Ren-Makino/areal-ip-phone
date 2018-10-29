@@ -49,7 +49,7 @@ foreach ($events as $event) {
     replyImageMessage($bot, $event->getReplyToken(), 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/original.jpg', 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/preview.jpg');
     $bot->replyText($event->getReplyToken(),'キーワード「被災状況」に関する情報を表示します。');
   }elseif(preg_match('/登録/',$event->getText())){
-    $file_name = mb_substr($event->getText(),3,13)'.txt';
+    $file_name = mb_substr($event->getText(),3,13).'.txt';
     touch($file_name);
     $fp=fopen($file_name,'w');
     fputs($fp,mb_strstr($event->getText(),'登録,',false));
