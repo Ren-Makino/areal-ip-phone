@@ -59,9 +59,11 @@ foreach ($events as $event) {
     fclose($fp);
   }elseif(preg_match('/確認/',$event->getText())){
     $file_name = mb_substr($event->getText(),3,13).'txt';
-    $fp=fopen($file_name,'r');
+    replyTextMessage($bot,$event->getReplyToken(),$file_name);
+    /*$fp=fopen($file_name,'r');
     $txt=fgets($fp);
     replyTextMessage($bot,$event->getReplyToken(),$txt);
+    fclose($fp);*/
   }
 }
 
