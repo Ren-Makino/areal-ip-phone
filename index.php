@@ -60,11 +60,14 @@ foreach ($events as $event) {
     replyTextMessage($bot,$event->getReplyToken(),'メッセージを登録しました。' . "\n" . 'TEL：' . mb_substr($event->getText(),3,13) . "\n" . 'メッセージ：' . mb_substr($event->getText(),17));
   }elseif(preg_match('/確認/',$event->getText())){
     $file_name = mb_substr($event->getText(),3,13).'.txt';
-    //replyTextMessage($bot,$event->getReplyToken(),$file_name);
-    $fp=fopen($file_name,'r');
-    $txt=fgets($fp);
-    replyTextMessage($bot,$event->getReplyToken(),$txt);
-    fclose($fp);
+    if (file_exists($file_name)){
+      $fp=fopen($file_name,'r');
+      $txt=fgets($fp);
+      replyTextMessage($bot,$event->getReplyToken(),$txt);
+      fclose($fp);
+    }else{
+      replyTextMessage($bot,$event->getReplyToken(),'メッセージが登録されていません。');
+    }
   }
 }
 
