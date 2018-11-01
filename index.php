@@ -65,10 +65,10 @@ foreach ($events as $event) {
     }else{
       replyTextMessage($bot,$event->getReplyToken(),'メッセージが登録されていません。');
     }
-  }else if($event instanceof \LINE\LINEBot\Event\MessageEvent\LocationMessage){
+  }/*else if($event instanceof \LINE\LINEBot\Event\MessageEvent\LocationMessage){
     replyTextMessage($bot, $event->getReplyToken(),$event->getAddress() . '[' . $event->getLatitude() . ',' . $event->getLongitude() .']');
     continue;
-  }
+  }*/
 }
 
 // テキストを返信。引数はLINEBot、返信先、テキスト
