@@ -45,20 +45,17 @@ foreach ($events as $event) {
   if(preg_match('/地震/',$event->getText())){
     $bot->replyText($event->getReplyToken(),'キーワード「地震」に関する情報を表示します。以下の情報が見つかりました。'."\n".'http://www.jma.go.jp/jp/quake/');
     //replyMultiMessage($bot,$event->getReplyToken(),new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($file_flag));
-  }elseif(preg_match('/被災状況/',$event->getText())){
+  }else if(preg_match('/被災状況/',$event->getText())){
     replyImageMessage($bot, $event->getReplyToken(), 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/original.jpg', 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/preview.jpg');
     $bot->replyText($event->getReplyToken(),'キーワード「被災状況」に関する情報を表示します。');
-  }elseif(preg_match('/登録/',$event->getText())){
+  }else if(preg_match('/登録/',$event->getText())){
     $file_name = mb_substr($event->getText(),3,13).'.txt';
     touch($file_name);
     $fp=fopen($file_name,'w');
     fputs($fp,mb_substr($event->getText(),17));
-    /*$fp=fopen($file_name,'r');
-    $txt=fgets($fp);
-    replyTextMessage($bot,$event->getReplyToken(),$txt);*/
     fclose($fp);
     replyTextMessage($bot,$event->getReplyToken(),'メッセージを登録しました。' . "\n" . 'TEL：' . mb_substr($event->getText(),3,13) . "\n" . 'メッセージ：' . mb_substr($event->getText(),17));
-  }elseif(preg_match('/確認/',$event->getText())){
+  }else if(preg_match('/確認/',$event->getText())){
     $file_name = mb_substr($event->getText(),3,13).'.txt';
     if (file_exists($file_name)){
       $fp=fopen($file_name,'r');
@@ -68,6 +65,9 @@ foreach ($events as $event) {
     }else{
       replyTextMessage($bot,$event->getReplyToken(),'メッセージが登録されていません。');
     }
+  }else if{$event instanceof \LINE\LINEBot\Event\MessageEvent\LocationMessage){
+    replyTextMessage($bot, $event->getReplyToken(),$event->getAddress() . '[' . $event->getLatitude() . ',' . $event->getLongitude() .']');
+    continue;
   }
 }
 
