@@ -43,8 +43,8 @@ foreach ($events as $event) {
     continue;
   }
   if(preg_match('/地震/',$event->getText())){
-    //$bot->replyText($event->getReplyToken(),'キーワード「地震」に関する情報を表示します。以下の情報が見つかりました。'."\n".'http://www.jma.go.jp/jp/quake/');
-    replyTextMessage($bot, $event->getReplyToken(),$event->getAddress());
+    $bot->replyText($event->getReplyToken(),'キーワード「地震」に関する情報を表示します。以下の情報が見つかりました。'."\n".'http://www.jma.go.jp/jp/quake/');
+    //replyTextMessage($bot, $event->getReplyToken(),$event->getAddress());
   }else if(preg_match('/被災状況/',$event->getText())){
     replyImageMessage($bot, $event->getReplyToken(), 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/original.jpg', 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/preview.jpg');
     $bot->replyText($event->getReplyToken(),'キーワード「被災状況」に関する情報を表示します。');
@@ -65,10 +65,10 @@ foreach ($events as $event) {
     }else{
       replyTextMessage($bot,$event->getReplyToken(),'メッセージが登録されていません。');
     }
-  }/*else if($event instanceof \LINE\LINEBot\Event\MessageEvent\LocationMessage){
-    replyTextMessage($bot, $event->getReplyToken(),$event->getAddress() . '[' . $event->getLatitude() . ',' . $event->getLongitude() .']');
-    continue;
-  }*/
+  }
+}else if($event instanceof \LINE\LINEBot\Event\MessageEvent\LocationMessage){
+  replyTextMessage($bot, $event->getReplyToken(),$event->getAddress() . '[' . $event->getLatitude() . ',' . $event->getLongitude() .']');
+  continue;
 }
 
 // テキストを返信。引数はLINEBot、返信先、テキスト
