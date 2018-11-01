@@ -32,16 +32,22 @@ try {
 
 // 配列に格納された各イベントをループで処理
 foreach ($events as $event) {
-  // MessageEventクラスのインスタンスでなければ処理をスキップ
-  if (!($event instanceof \LINE\LINEBot\Event\MessageEvent)) {
-    error_log('Non message event has come');
-    continue;
-  }
+
   // TextMessageクラスのインスタンスでなければ処理をスキップ
-  if (!($event instanceof \LINE\LINEBot\Event\MessageEvent\TextMessage)) {
+  /*if (!($event instanceof \LINE\LINEBot\Event\MessageEvent\TextMessage)) {
     error_log('Non text message has come');
     continue;
+  }*/
+
+  if ($event instanceof \LINE\LINEBot\Event\MessageEvent\TextMessage) {
+    $locationId = $event->getText();
   }
+  if($event instanceof \LINE\LINEBot\Event\MessageEvent\LocationMessage){
+    replyTextMessage($bot, $event->getReplyToken(),$event->getAddress() . '[' . $event->getLatitude() . ',' . $event->getLongitude() .']');
+    continue;
+  }
+
+
   if(preg_match('/地震/',$event->getText())){
     $bot->replyText($event->getReplyToken(),'キーワード「地震」に関する情報を表示します。以下の情報が見つかりました。'."\n".'http://www.jma.go.jp/jp/quake/');
     //replyTextMessage($bot, $event->getReplyToken(),$event->getAddress());
@@ -66,9 +72,6 @@ foreach ($events as $event) {
       replyTextMessage($bot,$event->getReplyToken(),'メッセージが登録されていません。');
     }
   }
-}else if($event instanceof \LINE\LINEBot\Event\MessageEvent\LocationMessage){
-  replyTextMessage($bot, $event->getReplyToken(),$event->getAddress() . '[' . $event->getLatitude() . ',' . $event->getLongitude() .']');
-  continue;
 }
 
 // テキストを返信。引数はLINEBot、返信先、テキスト
