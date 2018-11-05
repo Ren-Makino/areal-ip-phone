@@ -10,10 +10,7 @@ $bot = new \LINE\LINEBot($httpClient, ['channelSecret' => getenv('CHANNEL_SECRET
 // LINE Messaging APIがリクエストに付与した署名を取得
 $signature = $_SERVER['HTTP_' . \LINE\LINEBot\Constant\HTTPHeader::LINE_SIGNATURE];
 
-$suffId = 0;
-//$phoneNum = array(111,222);
-//$message = array('無事です。','困っています。');
-//$anpiData = array($phoneNum,$message);
+$file_name;
 
 
 // 署名が正当かチェック。正当であればリクエストをパースし配列へ
@@ -33,18 +30,11 @@ try {
 // 配列に格納された各イベントをループで処理
 foreach ($events as $event) {
 
-  // TextMessageクラスのインスタンスでなければ処理をスキップ
-  /*if (!($event instanceof \LINE\LINEBot\Event\MessageEvent\TextMessage)) {
-    error_log('Non text message has come');
-    continue;
-  }*/
-
   if ($event instanceof \LINE\LINEBot\Event\MessageEvent\TextMessage) {
     $locationId = $event->getText();
   }
   if ($event instanceof \LINE\LINEBot\Event\MessageEvent\LocationMessage){
-    //replyTextMessage($bot, $event->getReplyToken(),$event->getAddress() . '[' . $event->getLatitude() . ' , ' . $event->getLongitude() .']');
-    replyTextMessage($bot,$file_name);
+    replyTextMessage($bot, $event->getReplyToken(),$event->getAddress() . '[' . $event->getLatitude() . ' , ' . $event->getLongitude() .']');
     continue;
     $fp=fopen($file_name,'a');
     fputs($fp,' '. $event->getLatitude().' '.$event->getLongitude());
@@ -54,7 +44,6 @@ foreach ($events as $event) {
 
   if(preg_match('/地震/',$event->getText())){
     $bot->replyText($event->getReplyToken(),'キーワード「地震」に関する情報を表示します。以下の情報が見つかりました。'."\n".'http://www.jma.go.jp/jp/quake/');
-    //replyTextMessage($bot, $event->getReplyToken(),$event->getAddress());
   }else if(preg_match('/被災状況/',$event->getText())){
     replyImageMessage($bot, $event->getReplyToken(), 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/original.jpg', 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/preview.jpg');
     $bot->replyText($event->getReplyToken(),'キーワード「被災状況」に関する情報を表示します。');
