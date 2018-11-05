@@ -42,9 +42,12 @@ foreach ($events as $event) {
   if ($event instanceof \LINE\LINEBot\Event\MessageEvent\TextMessage) {
     $locationId = $event->getText();
   }
-  if($event instanceof \LINE\LINEBot\Event\MessageEvent\LocationMessage){
-    replyTextMessage($bot, $event->getReplyToken(),$event->getAddress() . '[' . $event->getLatitude() . ',' . $event->getLongitude() .']');
+  if ($event instanceof \LINE\LINEBot\Event\MessageEvent\LocationMessage){
+    replyTextMessage($bot, $event->getReplyToken(),$event->getAddress() . '[' . $event->getLatitude() . ' , ' . $event->getLongitude() .']');
     continue;
+    $fp=fopen($file_name,'a');
+    fputs($fp,','. $event->getLatitude().','.$event->getLongitude());
+    fclose($fp);
   }
 
 
