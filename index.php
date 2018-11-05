@@ -43,10 +43,11 @@ foreach ($events as $event) {
     $locationId = $event->getText();
   }
   if ($event instanceof \LINE\LINEBot\Event\MessageEvent\LocationMessage){
-    replyTextMessage($bot, $event->getReplyToken(),$event->getAddress() . '[' . $event->getLatitude() . ' , ' . $event->getLongitude() .']');
+    //replyTextMessage($bot, $event->getReplyToken(),$event->getAddress() . '[' . $event->getLatitude() . ' , ' . $event->getLongitude() .']');
+    replyTextMessage($bot,  $file_name);
     continue;
     $fp=fopen($file_name,'a');
-    fputs($fp,','. $event->getLatitude().','.$event->getLongitude());
+    fputs($fp,' '. $event->getLatitude().' '.$event->getLongitude());
     fclose($fp);
   }
 
