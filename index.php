@@ -12,6 +12,9 @@ $signature = $_SERVER['HTTP_' . \LINE\LINEBot\Constant\HTTPHeader::LINE_SIGNATUR
 
 $file_name;
 
+$latitude;
+$longituide;
+
 
 // 署名が正当かチェック。正当であればリクエストをパースし配列へ
 // 不正であれば例外の内容を出力
@@ -35,7 +38,6 @@ foreach ($events as $event) {
   }
   if ($event instanceof \LINE\LINEBot\Event\MessageEvent\LocationMessage){
     replyTextMessage($bot, $event->getReplyToken(),$event->getAddress() . '[' . $event->getLatitude() . ' , ' . $event->getLongitude() .']');
-    continue;
     $fp=fopen($file_name,'a');
     fputs($fp,' '. $event->getLatitude().' '.$event->getLongitude());
     fclose($fp);
