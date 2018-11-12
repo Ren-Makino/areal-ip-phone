@@ -40,7 +40,7 @@ foreach ($events as $event) {
     //replyTextMessage($bot, $event->getReplyToken(),$event->getAddress() . '[' . $event->getLatitude() . ' , ' . $event->getLongitude() .']');
     $latitude=$event->getLatitude();
     $longitude=$event->getLongitude();
-    replyTextMessage($bot,$event->getReplyToken(),'filename'.$file_name);
+    //replyTextMessage($bot,$event->getReplyToken(),'filename'.$file_name);
 
     if (file_exists('111-1111-1111')){
       $fp=fopen($file_name,'r');
