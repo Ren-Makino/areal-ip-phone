@@ -41,6 +41,15 @@ foreach ($events as $event) {
     $latitude=$event->getLatitude();
     $longitude=$event->getLongitude();
     replyTextMessage($bot,$event->getReplyToken(),'filename'.$file_name);
+
+    if (file_exists('111-1111-1111')){
+      $fp=fopen($file_name,'r');
+      $txt=fgets($fp);
+      replyTextMessage($bot,$event->getReplyToken(),'メッセージを表示します。'. "\n". '「'. $txt.'」');
+      fclose($fp);
+    }else{
+      replyTextMessage($bot,$event->getReplyToken(),'メッセージが登録されていません。');
+    }
     //$fp=fopen($file_name,'a');
     //fputs($fp,' '. $event->getLatitude().' '.$event->getLongitude());
     //fclose($fp);
