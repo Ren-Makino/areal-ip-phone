@@ -40,10 +40,10 @@ foreach ($events as $event) {
     //replyTextMessage($bot, $event->getReplyToken(),$event->getAddress() . '[' . $event->getLatitude() . ' , ' . $event->getLongitude() .']');
     $latitude=$event->getLatitude();
     $longitude=$event->getLongitude();
-    replyTextMessage($bot,$event->getReplyToken(),$latitude .' , '. );
-    $fp=fopen($file_name,'a');
-    fputs($fp,' '. $event->getLatitude().' '.$event->getLongitude());
-    fclose($fp);
+    replyTextMessage($bot,$event->getReplyToken(),'位置情報');
+    //$fp=fopen($file_name,'a');
+    //fputs($fp,' '. $event->getLatitude().' '.$event->getLongitude());
+    //fclose($fp);
   }
 
 
