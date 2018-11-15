@@ -64,10 +64,10 @@ foreach ($events as $event) {
     if (file_exists($file_name)){
       $fp=fopen($file_name,'r');
       $txt=fgets($fp);
-      replyTextMessage($bot,$event->getReplyToken(),'メッセージを表示します。'. "\n". '「'. $txt.'」');
+      replyTextMessage($bot,$event->getReplyToken(),'位置情報'. "\n". '「'. $txt.'」');
       fclose($fp);
     }else{
-      replyTextMessage($bot,$event->getReplyToken(),'メッセージが登録されていません。');
+      replyTextMessage($bot,$event->getReplyToken(),'位置情報が登録されていません。');
     }
   }
 }
