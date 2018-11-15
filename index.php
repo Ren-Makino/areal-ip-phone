@@ -58,7 +58,7 @@ foreach ($events as $event) {
     $fp=fopen($file_name,'w');
     fputs($fp,mb_substr($event->getText(),17));
     fclose($fp);
-    replyTextMessage($bot,$event->getReplyToken(),'位置情報を登録しました' . "\n" . 'TEL：' . mb_substr($event->getText(),3,13) . "\n" . 'メッセージ：' . mb_substr($event->getText(),17));
+    replyTextMessage($bot,$event->getReplyToken(),'位置情報を登録しました' . "\n" . 'TEL：' . mb_substr($event->getText(),3,13) . "\n" . '座標：' . mb_substr($event->getText(),17));
   }else if(preg_match('/確認/',$event->getText())){
     $file_name = mb_substr($event->getText(),3,13).'.txt';
     if (file_exists($file_name)){
