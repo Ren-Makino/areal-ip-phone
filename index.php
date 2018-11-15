@@ -38,8 +38,8 @@ foreach ($events as $event) {
   }
   if ($event instanceof \LINE\LINEBot\Event\MessageEvent\LocationMessage){
     //replyTextMessage($bot, $event->getReplyToken(),$event->getAddress() . '[' . $event->getLatitude() . ' , ' . $event->getLongitude() .']');
-    $latitude=$event->getLatitude();
-    $longitude=$event->getLongitude();
+    $latitude=round($event->getLatitude(),4,PHP_ROUND_HALF_EVEN);
+    $longitude=round($event->getLongitude(),4,PHP_ROUND_HALF_EVEN);
     replyTextMessage($bot,$event->getReplyToken(),$latitude .' , '. $longitude);
     //$fp=fopen($file_name,'a');
     //fputs($fp,' '. $event->getLatitude().' '.$event->getLongitude());
