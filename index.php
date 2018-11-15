@@ -56,7 +56,7 @@ foreach ($events as $event) {
     $file_name = mb_substr($event->getText(),3,13).'.txt';
     touch($file_name);
     $fp=fopen($file_name,'w');
-    fputs($fp,mb_substr($event->getText(),28));
+    fputs($fp,mb_substr($event->getText(),17));
     fclose($fp);
     replyTextMessage($bot,$event->getReplyToken(),'メッセージを登録しました。' . "\n" . 'TEL：' . mb_substr($event->getText(),3,13) . "\n" . 'メッセージ：' . mb_substr($event->getText(),17));
   }else if(preg_match('/確認/',$event->getText())){
