@@ -33,6 +33,31 @@ foreach ($events as $event) {
 
   if ($event instanceof \LINE\LINEBot\Event\MessageEvent\TextMessage) {
     $locationId = $event->getText();
+    if(preg_match('/地震/',$event->getText())){
+      $bot->replyText($event->getReplyToken(),'キーワード「地震」に関する情報を表示します。以下の情報が見つかりました。'."\n".'http://www.jma.go.jp/jp/quake/');
+    }else if(preg_match('/被災状況/',$event->getText())){
+      replyImageMessage($bot, $event->getReplyToken(), 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/original.jpg', 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/preview.jpg');
+      $bot->replyText($event->getReplyToken(),'キーワード「被災状況」に関する情報を表示します。');
+    }else if(preg_match('/登録/',$event->getText())){
+      $file_name = mb_substr($event->getText(),3,13).'.txt';
+      touch($file_name);
+      $fp=fopen($file_name,'w');
+      fputs($fp,mb_substr($event->getText(),17));
+      fclose($fp);
+      replyTextMessage($bot,$event->getReplyToken(),'位置情報を登録しました' . "\n" . 'TEL：' . /*mb_substr($event->getText(),3,13)*/$file_name . "\n" . '座標：' . mb_substr($event->getText(),17));
+    }else if(preg_match('/確認/',$event->getText())){
+      $file_name = mb_substr($event->getText(),3,13).'.txt';
+      if (file_exists($file_name)){
+        $fp=fopen($file_name,'r');
+        $txt=fgets($fp);
+        replyTextMessage($bot,$event->getReplyToken(),'位置情報'. "\n". '「'. $txt.'」');
+        fclose($fp);
+      }else{
+        replyTextMessage($bot,$event->getReplyToken(),'位置情報が登録されていません。');
+      }
+    }else if(preg_match('/テスト/',$event->getText())){
+      $bot->replyText($event->getReplyToken(),'file_name：'.$file_name);
+    }
   }
   if ($event instanceof \LINE\LINEBot\Event\MessageEvent\LocationMessage){
     //replyTextMessage($bot, $event->getReplyToken(),$event->getAddress() . '[' . $event->getLatitude() . ' , ' . $event->getLongitude() .']');
@@ -45,31 +70,7 @@ foreach ($events as $event) {
   }
 
 
-  if(preg_match('/地震/',$event->getText())){
-    $bot->replyText($event->getReplyToken(),'キーワード「地震」に関する情報を表示します。以下の情報が見つかりました。'."\n".'http://www.jma.go.jp/jp/quake/');
-  }else if(preg_match('/被災状況/',$event->getText())){
-    replyImageMessage($bot, $event->getReplyToken(), 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/original.jpg', 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/preview.jpg');
-    $bot->replyText($event->getReplyToken(),'キーワード「被災状況」に関する情報を表示します。');
-  }else if(preg_match('/登録/',$event->getText())){
-    $file_name = mb_substr($event->getText(),3,13).'.txt';
-    touch($file_name);
-    $fp=fopen($file_name,'w');
-    fputs($fp,mb_substr($event->getText(),17));
-    fclose($fp);
-    replyTextMessage($bot,$event->getReplyToken(),'位置情報を登録しました' . "\n" . 'TEL：' . /*mb_substr($event->getText(),3,13)*/$file_name . "\n" . '座標：' . mb_substr($event->getText(),17));
-  }else if(preg_match('/確認/',$event->getText())){
-    $file_name = mb_substr($event->getText(),3,13).'.txt';
-    if (file_exists($file_name)){
-      $fp=fopen($file_name,'r');
-      $txt=fgets($fp);
-      replyTextMessage($bot,$event->getReplyToken(),'位置情報'. "\n". '「'. $txt.'」');
-      fclose($fp);
-    }else{
-      replyTextMessage($bot,$event->getReplyToken(),'位置情報が登録されていません。');
-    }
-  }else if(preg_match('/テスト/',$event->getText())){
-    $bot->replyText($event->getReplyToken(),'file_name：'.$file_name);
-  }
+
 }
 
 // テキストを返信。引数はLINEBot、返信先、テキスト
