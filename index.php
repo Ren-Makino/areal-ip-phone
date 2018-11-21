@@ -56,7 +56,7 @@ foreach ($events as $event) {
         replyTextMessage($bot,$event->getReplyToken(),'位置情報が登録されていません。');
       }
     }else if(preg_match('/テスト/',$event->getText())){
-      $bot->replyText($event->getReplyToken(),'file_name：'.$file_name);
+      $bot->replyText($event->getReplyToken(),'userId：'.$event->getUserId());
     }
   }
   if ($event instanceof \LINE\LINEBot\Event\MessageEvent\LocationMessage){
