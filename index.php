@@ -4,6 +4,7 @@
 require_once __DIR__ . '/vendor/autoload.php';
 
 touch('userIdList');
+$listKey=0;
 
 // アクセストークンを使いCurlHTTPClientをインスタンス化
 $httpClient = new \LINE\LINEBot\HTTPClient\CurlHTTPClient(getenv('CHANNEL_ACCESS_TOKEN'));
@@ -59,9 +60,26 @@ foreach ($events as $event) {
       $fp=fopen('userIdList','a');
       fputs($fp,','.$event->getUserId().'1');
       fclose($fp);
+
+      //比較用に自分の位置情報を自分のユーザーIDから取得(テキストメッセージイベントではgetlatitudeが使用不可)
+      $fp=fopen($event->getUserId().'1','r');
+      $myLocation=explode(',',fgets($fp));
+
+
       $fp=fopen('userIdList','r');
+      //配列に全ユーザーIDを格納
       $userIdArray=explode(',',fgets($fp));
-      replyTextMessage($bot,$event->getReplyToken(), $userIdArray[0].','.$userIdArray[1]);
+      foreach($userIdArray as $value){
+        $fp=fopen($value,'r');
+        $location=explode(',',fgets($fp));
+        //座標の差異が0.001以下ならば(100m以内ならば)
+        if($myLocation[0]-$location[0]<0.001 $$ $myLocation[1]-$location[1]<0.001){
+          //現在のユーザーIDのメッセージを配列に格納
+          $messageList[$listKey]=fgets($fp);
+          $listKey++;
+        }
+      }
+      replyTextMessage($bot,$event->getReplyToken(),$messageList[0]);
     }
   }
   if ($event instanceof \LINE\LINEBot\Event\MessageEvent\LocationMessage){
@@ -77,6 +95,7 @@ foreach ($events as $event) {
     touch($file_name);
     $fp=fopen($file_name,'w');
     fputs($fp,$latitude .','. $longitude);
+    fputs($fp,'help me');
     fclose($fp);
     if (file_exists('userIdList')){
       $fp=fopen('userIdList','r');
