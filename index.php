@@ -61,7 +61,7 @@ foreach ($events as $event) {
       fclose($fp);
       $fp=fopen('userIdList','r');
       $userIdArray=explode(',',fgets($fp));
-      replyTextMessage($bot,$event->getReplyToken(), $userIdArray);
+      replyTextMessage($bot,$event->getReplyToken(), $userIdArray[0].','.$userIdArray[1]);
     }
   }
   if ($event instanceof \LINE\LINEBot\Event\MessageEvent\LocationMessage){
