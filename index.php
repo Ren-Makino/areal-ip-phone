@@ -65,8 +65,8 @@ foreach ($events as $event) {
     $longitude=round($event->getLongitude(),4,PHP_ROUND_HALF_EVEN);
     $file_name = $event->getUserId();
     //ユーザーIDリストに追記
-    $fp=fopen('userIdList','w');
-    fputs($event->getUserId());
+    $fp=fopen('userIdList','a');
+    fputs($fp,$event->getUserId());
     fclose($fp);
     //ユーザー個別ファイルに位置情報を記録
     touch($file_name);
