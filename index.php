@@ -97,8 +97,7 @@ foreach ($events as $event) {
     //ユーザー個別ファイルに位置情報を記録
     touch($file_name);
     $fp=fopen($file_name,'w');
-    fputs($fp,$latitude .','. $longitude);
-    fputs($fp,'help me');
+    fputs($fp,$latitude .','. $longitude \n .'help me');
     fclose($fp);
     if (file_exists('userIdList')){
       $fp=fopen('userIdList','r');
