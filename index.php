@@ -4,6 +4,7 @@
 require_once __DIR__ . '/vendor/autoload.php';
 
 touch('userIdList');
+$myLocation=array();
 $listKey=0;
 
 // アクセストークンを使いCurlHTTPClientをインスタンス化
