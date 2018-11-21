@@ -80,9 +80,9 @@ foreach ($events as $event) {
           //現在のユーザーIDのメッセージを配列に格納
           $messageList[$listKey]=fgets($fp);
           $listKey++;
+          replyTextMessage($bot,$event->getReplyToken(),$messageList[0]);
         }
       }
-      replyTextMessage($bot,$event->getReplyToken(),$messageList[0]);
     }
   }
   if ($event instanceof \LINE\LINEBot\Event\MessageEvent\LocationMessage){
