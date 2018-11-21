@@ -63,10 +63,14 @@ foreach ($events as $event) {
     //replyTextMessage($bot, $event->getReplyToken(),$event->getAddress() . '[' . $event->getLatitude() . ' , ' . $event->getLongitude() .']');
     $latitude=round($event->getLatitude(),4,PHP_ROUND_HALF_EVEN);
     $longitude=round($event->getLongitude(),4,PHP_ROUND_HALF_EVEN);
-    replyTextMessage($bot,$event->getReplyToken(),$latitude .','. $longitude.','.$event->getUserId());
-    //$fp=fopen($file_name,'a');
-    //fputs($fp,' '. $event->getLatitude().' '.$event->getLongitude());
-    //fclose($fp);
+    $file_name = $event->getUserId();
+    touch($file_name);
+    $fp=fopen($file_name,'w');
+    fputs($fp,$latitude .','. $longitude);
+    fclose($fp);
+    if (file_exists($file_name)){
+      replyTextMessage($bot,$event->getReplyToken(),$latitude .','. $longitude.','.$event->getUserId());
+    }
   }
 
 
