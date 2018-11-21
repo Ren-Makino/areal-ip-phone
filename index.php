@@ -15,6 +15,8 @@ $file_name;
 $latitude;
 $longituide;
 
+$array=array()
+
 
 // 署名が正当かチェック。正当であればリクエストをパースし配列へ
 // 不正であれば例外の内容を出力
@@ -69,6 +71,8 @@ foreach ($events as $event) {
     }else{
       replyTextMessage($bot,$event->getReplyToken(),'位置情報が登録されていません。');
     }
+  }else if(preg_match('/テスト/',$event->getText())){
+    $bot->replyText($event->getReplyToken(),'file_name：'.$file_name);
   }
 }
 
