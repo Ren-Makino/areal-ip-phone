@@ -3,7 +3,7 @@
 // Composerでインストールしたライブラリを一括読み込み
 require_once __DIR__ . '/vendor/autoload.php';
 
-$file_name='000-0000-0000';
+touch('userIdList');
 
 // アクセストークンを使いCurlHTTPClientをインスタンス化
 $httpClient = new \LINE\LINEBot\HTTPClient\CurlHTTPClient(getenv('CHANNEL_ACCESS_TOKEN'));
@@ -64,12 +64,20 @@ foreach ($events as $event) {
     $latitude=round($event->getLatitude(),4,PHP_ROUND_HALF_EVEN);
     $longitude=round($event->getLongitude(),4,PHP_ROUND_HALF_EVEN);
     $file_name = $event->getUserId();
+    //ユーザーIDリストに追記
+    $fp=fopen('userIdList','a');
+    fputs($event->getUserId());
+    fclose($fp);
     touch($file_name);
+    //ユーザー個別ファイルに位置情報を記録
     $fp=fopen($file_name,'w');
     fputs($fp,$latitude .','. $longitude);
     fclose($fp);
-    if (file_exists($file_name)){
-      replyTextMessage($bot,$event->getReplyToken(),$latitude .','. $longitude.','.$event->getUserId());
+    if (file_exists('userIdList')){
+      $fp=fopen('userIdList','r');
+      $txt=fgets($fp);
+      replyTextMessage($bot,$event->getReplyToken(), $txt);
+      fclose($fp);
     }
   }
 
