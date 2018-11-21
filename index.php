@@ -15,7 +15,7 @@ $file_name;
 $latitude;
 $longituide;
 
-$array=array()
+$array=array();
 
 
 // 署名が正当かチェック。正当であればリクエストをパースし配列へ
