@@ -56,7 +56,12 @@ foreach ($events as $event) {
         replyTextMessage($bot,$event->getReplyToken(),'位置情報が登録されていません。');
       }
     }else if(preg_match('/テスト/',$event->getText())){
-      $bot->replyText($event->getReplyToken(),'userId：'.$event->getUserId());
+      $fp=fopen('userIdList','a');
+      fputs($fp,','.$event->getUserId().'1');
+      fclose($fp);
+      $fp=fopen('userIdList','r');
+      $userIdArray=explode(',',fgets($fp));
+      replyTextMessage($bot,$event->getReplyToken(), $userIdArray);
     }
   }
   if ($event instanceof \LINE\LINEBot\Event\MessageEvent\LocationMessage){
