@@ -73,8 +73,8 @@ foreach ($events as $event) {
     $fp=fopen($file_name,'w');
     fputs($fp,$latitude .','. $longitude);
     fclose($fp);
-    if (file_exists('userIdList')){
-      $fp=fopen('userIdList','r');
+    if (file_exists($file_name)){
+      $fp=fopen($file_name,'r');
       $txt=fgets($fp);
       replyTextMessage($bot,$event->getReplyToken(), $txt);
       fclose($fp);
