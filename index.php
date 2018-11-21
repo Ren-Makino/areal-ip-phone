@@ -65,16 +65,16 @@ foreach ($events as $event) {
     $longitude=round($event->getLongitude(),4,PHP_ROUND_HALF_EVEN);
     $file_name = $event->getUserId();
     //ユーザーIDリストに追記
-    $fp=fopen('userIdList','a');
+    $fp=fopen('userIdList','w');
     fputs($event->getUserId());
     fclose($fp);
-    touch($file_name);
     //ユーザー個別ファイルに位置情報を記録
+    touch($file_name);
     $fp=fopen($file_name,'w');
     fputs($fp,$latitude .','. $longitude);
     fclose($fp);
-    if (file_exists($file_name)){
-      $fp=fopen($file_name,'r');
+    if (file_exists('userIdList')){
+      $fp=fopen('userIdList','r');
       $txt=fgets($fp);
       replyTextMessage($bot,$event->getReplyToken(), $txt);
       fclose($fp);
