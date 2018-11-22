@@ -85,7 +85,7 @@ foreach ($events as $event) {
           //replyTextMessage($bot,$event->getReplyToken(),fgets($fp));
           $listKey++;
         }
-        replyTextMessage($bot,$event->getReplyToken(),fgets($fp));
+        replyTextMessage($bot,$event->getReplyToken(),fgets($fp).','.fgets($fp));
       }
     }
   }
