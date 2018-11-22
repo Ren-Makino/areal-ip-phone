@@ -75,7 +75,7 @@ foreach ($events as $event) {
       $userIdArray=explode(',',fgets($fp));
       foreach($userIdArray as $value){
         $fp2=fopen($value,'r');
-        replyTextMessage($bot,$event->getReplyToken(),fgets($fp2) fgets($fp2));
+        replyTextMessage($bot,$event->getReplyToken(),fgets($fp2).' '.fgets($fp2));
         fclose($fp2);
 
         /*$fp=fopen($value,'r');
