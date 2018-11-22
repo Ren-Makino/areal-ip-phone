@@ -59,7 +59,7 @@ foreach ($events as $event) {
       }
     }else if(preg_match('/テスト/',$event->getText())){
       $messageList[$listKey]='help me';
-      replyTextMessage($bot,$event->getReplyToken(),$messageList[0]);
+      replyTextMessage($bot,$event->getReplyToken(),$listKey);
 
       /*$fp=fopen('userIdList','a');
       fputs($fp,','.$event->getUserId().'1');
