@@ -82,9 +82,10 @@ foreach ($events as $event) {
         if($myLocation==$location){
           //現在のユーザーIDのメッセージを配列に格納
           //$messageList[$listKey]=fgets($fp);
-          replyTextMessage($bot,$event->getReplyToken(),fgets($fp));
+          //replyTextMessage($bot,$event->getReplyToken(),fgets($fp));
           $listKey++;
         }
+        replyTextMessage($bot,$event->getReplyToken(),fgets($fp));
       }
     }
   }
