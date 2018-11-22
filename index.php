@@ -74,21 +74,21 @@ foreach ($events as $event) {
       //配列に全ユーザーIDを格納
       $userIdArray=explode(',',fgets($fp));
       foreach($userIdArray as $value){
-        $fp2=fopen($value,'r');
+        /*$fp2=fopen($value,'r');
         replyTextMessage($bot,$event->getReplyToken(),fgets($fp2).' '.fgets($fp2));
-        fclose($fp2);
+        fclose($fp2);*/
 
-        /*$fp=fopen($value,'r');
-        $location=explode(',',fgets($fp));
+        $fp2=fopen($value,'r');
+        $location=explode(',',fgets($fp2));
         //座標の差異が0.001以下ならば(100m以内ならば)
         //文字列で四則演算してるからダメ？
         //if($myLocation[0]-$location[0]<0.001 $$ $myLocation[1]-$location[1]<0.001){
         if($myLocation==$location){
           //現在のユーザーIDのメッセージを配列に格納
           //$messageList[$listKey]=fgets($fp);
-          replyTextMessage($bot,$event->getReplyToken(),fgets($fp));
+          replyTextMessage($bot,$event->getReplyToken(),$location[0].' '. $location[1].' '.fgets($fp2));
           $listKey++;
-        }*/
+        }
       }
       fclose($fp);
     }
