@@ -74,7 +74,11 @@ foreach ($events as $event) {
       //配列に全ユーザーIDを格納
       $userIdArray=explode(',',fgets($fp));
       foreach($userIdArray as $value){
-        $fp=fopen($value,'r');
+        $fp2=fopen($value,'r');
+        replyTextMessage($bot,$event->getReplyToken(),fgets($fp2) fgets($fp2));
+        fclose($fp2);
+
+        /*$fp=fopen($value,'r');
         $location=explode(',',fgets($fp));
         //座標の差異が0.001以下ならば(100m以内ならば)
         //文字列で四則演算してるからダメ？
@@ -84,8 +88,9 @@ foreach ($events as $event) {
           //$messageList[$listKey]=fgets($fp);
           replyTextMessage($bot,$event->getReplyToken(),fgets($fp));
           $listKey++;
-        }
+        }*/
       }
+      fclose($fp);
     }
   }
   if ($event instanceof \LINE\LINEBot\Event\MessageEvent\LocationMessage){
