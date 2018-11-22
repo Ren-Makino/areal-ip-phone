@@ -81,7 +81,7 @@ foreach ($events as $event) {
         //if($myLocation[0]-$location[0]<0.001 $$ $myLocation[1]-$location[1]<0.001){
         if($myLocation==$location){
           //現在のユーザーIDのメッセージを配列に格納
-          $messageList[$listKey]=fgets($fp);
+          //$messageList[$listKey]=fgets($fp);
           replyTextMessage($bot,$event->getReplyToken(),fgets($fp));
           $listKey++;
         }
