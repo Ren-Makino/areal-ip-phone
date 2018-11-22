@@ -75,7 +75,7 @@ foreach ($events as $event) {
       $userIdArray=explode(',',fgets($fp));
       foreach($userIdArray as $value){
         $fp=fopen($value,'r');
-        $location=explode(',',fgets($fp));
+        //$location=explode(',',fgets($fp));
         //座標の差異が0.001以下ならば(100m以内ならば)
         //文字列で四則演算してるからダメ？
         //if($myLocation[0]-$location[0]<0.001 $$ $myLocation[1]-$location[1]<0.001){
