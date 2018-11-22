@@ -97,8 +97,8 @@ foreach ($events as $event) {
     //ユーザー個別ファイルに位置情報を記録
     touch($file_name);
     $fp=fopen($file_name,'w');
-    fputs($fp,$latitude .','. $longitude);
-    fputs($fp,"\n".'help me');
+    fwrite($fp,$latitude .','. $longitude);
+    fwrite($fp,"\n".'help me');
     //ここで２行目に書き込みたい
     fclose($fp);
     if (file_exists($file_name)){
