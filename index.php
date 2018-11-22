@@ -105,7 +105,8 @@ foreach ($events as $event) {
     if (file_exists($file_name)){
       $fp=fopen($file_name,'r');
       $txt=fgets($fp);
-      replyTextMessage($bot,$event->getReplyToken(), $txt);
+      $txt2=fgets($fp);
+      replyTextMessage($bot,$event->getReplyToken(), $txt.','.$txt2);
       fclose($fp);
     }
   }
