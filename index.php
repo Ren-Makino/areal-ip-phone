@@ -91,8 +91,8 @@ foreach ($events as $event) {
       //IDのそれぞれに対して位置情報を比較する
       foreach($userIdArray as $value){
         $fp2=fopen($value,'r');
-        $test=fgets($fp2).''.fgets($fp2);
-        replyTextMessage($bot,$event->getReplyToken(),$test);
+        $garbage=fgets($fp2).''.fgets($fp2);
+        replyTextMessage($bot,$event->getReplyToken(),fgets($fp2));
         fclose($fp2);
 
         /*
@@ -128,6 +128,7 @@ foreach ($events as $event) {
     $fp=fopen($file_name,'a');
     fwrite($fp,$latitude .','. $longitude ."\n");
     fwrite($fp,'000-0000-0000'."\n");
+    fwrite($fp,'User1');
 
 
     //テスト用の疑似別ユーザーを登録
@@ -140,6 +141,7 @@ foreach ($events as $event) {
     $fp=fopen($file_name,'a');
     fwrite($fp,$latitude .','. $longitude ."\n");
     fwrite($fp,'000-0000-0000'."\n");
+    fwrite($fp,'User2');
 
 
     //ファイルから一行ずつ読み出し
