@@ -54,7 +54,7 @@ foreach ($events as $event) {
       replyTextMessage($bot,$event->getReplyToken(),$testMessage);
       $file_name = $event->getUserId();
       $fp=fopen($file_name,'a');
-      fwrite($fp,$testMessage."\n".);
+      fwrite($fp,$testMessage."\n");
       fclose($fp);
 
 
