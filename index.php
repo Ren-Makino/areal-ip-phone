@@ -41,12 +41,18 @@ foreach ($events as $event) {
       replyImageMessage($bot, $event->getReplyToken(), 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/original.jpg', 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/preview.jpg');
       $bot->replyText($event->getReplyToken(),'キーワード「被災状況」に関する情報を表示します。');
     }else if(preg_match('/登録/',$event->getText())){
+      /*
       $file_name = mb_substr($event->getText(),3,13).'.txt';
       touch($file_name);
       $fp=fopen($file_name,'w');
       fputs($fp,mb_substr($event->getText(),17));
       fclose($fp);
-      replyTextMessage($bot,$event->getReplyToken(),'位置情報を登録しました' . "\n" . 'TEL：' . /*mb_substr($event->getText(),3,13)*/$file_name . "\n" . '座標：' . mb_substr($event->getText(),17));
+      replyTextMessage($bot,$event->getReplyToken(),'位置情報を登録しました' . "\n" . 'TEL：' . mb_substr($event->getText(),3,13) $file_name . "\n" . '座標：' . mb_substr($event->getText(),17));
+      */
+
+      $testMessage = mb_substr($event->getText(),4);
+      replyTextMessage($bot,$event->getReplyToken(),$testMessage);
+
     }else if(preg_match('/確認/',$event->getText())){
       $file_name = mb_substr($event->getText(),3,13).'.txt';
       if (file_exists($file_name)){
@@ -115,7 +121,8 @@ foreach ($events as $event) {
       $fp=fopen($file_name,'r');
       $txt=fgets($fp);
       $txt2=fgets($fp);
-      replyTextMessage($bot,$event->getReplyToken(), $txt.','.$txt2);
+      $txt3=fgets($fp);
+      replyTextMessage($bot,$event->getReplyToken(), $txt.','.$txt2.','.$txt3);
       fclose($fp);
     }
   }
