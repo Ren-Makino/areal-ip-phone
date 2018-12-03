@@ -130,7 +130,7 @@ foreach ($events as $event) {
     fwrite($fp,$latitude .','. $longitude ."\n");
     fwrite($fp,'000-0000-0000'."\n");
 
-    /*
+
     //テスト用の疑似別ユーザーを登録
     $fp=fopen('userIdList','a');
     fputs($fp,$event->getUserId().'1');
@@ -141,8 +141,8 @@ foreach ($events as $event) {
     $fp=fopen($file_name,'a');
     fwrite($fp,$latitude .','. $longitude ."\n");
     fwrite($fp,'000-0000-0000'."\n");
-    fwrite($fp,'User2');
-    */
+
+
 
 
     //ファイルから一行ずつ読み出し
