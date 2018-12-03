@@ -50,8 +50,14 @@ foreach ($events as $event) {
       replyTextMessage($bot,$event->getReplyToken(),'位置情報を登録しました' . "\n" . 'TEL：' . mb_substr($event->getText(),3,13) $file_name . "\n" . '座標：' . mb_substr($event->getText(),17));
       */
 
-      $testMessage = mb_substr($event->getText(),4);
+      $testMessage = mb_substr($event->getText(),3);
       replyTextMessage($bot,$event->getReplyToken(),$testMessage);
+      $file_name = $event->getUserId();
+      $fp=fopen($file_name,'a');
+      fwrite($fp,$testMessage);
+      fclose($fp);
+
+
 
     }else if(preg_match('/確認/',$event->getText())){
       $file_name = mb_substr($event->getText(),3,13).'.txt';
@@ -115,15 +121,15 @@ foreach ($events as $event) {
     $fp=fopen($file_name,'a');
     fwrite($fp,$latitude .','. $longitude ."\n");
     fwrite($fp,'000-0000-0000'."\n");
-    fwrite($fp,$testMessage."\n");
-    //ここで２行目に書き込みたい
+
+    //ファイルから一行ずつ読み出し
     fclose($fp);
     if (file_exists($file_name)){
       $fp=fopen($file_name,'r');
       $txt=fgets($fp);
       $txt2=fgets($fp);
       $txt3=fgets($fp);
-      replyTextMessage($bot,$event->getReplyToken(), $txt.','.$txt2.','.$txt3);
+      replyTextMessage($bot,$event->getReplyToken(), $txt $txt2 $txt3);
       fclose($fp);
     }
   }
