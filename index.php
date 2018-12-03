@@ -77,7 +77,7 @@ foreach ($events as $event) {
       fputs($fp,','.$event->getUserId());
       fclose($fp);
 
-      //比較用に自分の位置情報を自分のユーザーIDから取得(テキストメッセージイベントではgetlatitudeが使用不可)
+      //比較用に自分の位置情報を自分のユーザーIDから取得(テキストメッセージイベントではgetlatitudeが使用不可のため)
       $fp=fopen($event->getUserId(),'r');
       $myLocation=explode(',',fgets($fp));
 
@@ -86,15 +86,14 @@ foreach ($events as $event) {
       //配列に全ユーザーIDを格納
       $userIdArray=explode(',',fgets($fp));
 
-      replyTextMessage($bot,$event->getReplyToken(),$myLocation[0] .','. $myLocation[1]);
 
-      /*
       //IDのそれぞれに対して位置情報を比較する
       foreach($userIdArray as $value){
-        //$fp2=fopen($value,'r');
+        $fp2=fopen($value,'r');
         replyTextMessage($bot,$event->getReplyToken(),fgets($fp2).' '.fgets($fp2));
         fclose($fp2);
 
+        /*
         $fp2=fopen($value,'r');
         $location=explode(',',fgets($fp2));
         //座標の差異が0.001以下ならば(100m以内ならば)
@@ -106,8 +105,9 @@ foreach ($events as $event) {
           replyTextMessage($bot,$event->getReplyToken(),$location[0].' '. $location[1].' '.fgets($fp2));
           $listKey++;
         }
-      }*/
-      //fclose($fp);
+        */
+      }
+      fclose($fp);
     }
   }
   if ($event instanceof \LINE\LINEBot\Event\MessageEvent\LocationMessage){
@@ -126,6 +126,19 @@ foreach ($events as $event) {
     $fp=fopen($file_name,'a');
     fwrite($fp,$latitude .','. $longitude ."\n");
     fwrite($fp,'000-0000-0000'."\n");
+
+
+    //テスト用の疑似別ユーザーを登録
+    $fp=fopen('userIdList','a');
+    fputs($fp,$event->getUserId().'1');
+    fclose($fp);
+    //ユーザー個別ファイルに位置情報を記録
+    $file_name = $event->getUserId().'1';
+    touch($file_name);
+    $fp=fopen($file_name,'a');
+    fwrite($fp,$latitude .','. $longitude ."\n");
+    fwrite($fp,'000-0000-0000'."\n");
+
 
     //ファイルから一行ずつ読み出し
     fclose($fp);
