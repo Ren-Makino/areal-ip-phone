@@ -73,6 +73,7 @@ foreach ($events as $event) {
       /*$messageList[$listKey]='help me';
       replyTextMessage($bot,$event->getReplyToken(),$messageList[$listKey]);*/
 
+      //ユーザーIDリストに追記
       $fp=fopen('userIdList','a');
       fputs($fp,','.$event->getUserId());
       fclose($fp);
@@ -81,7 +82,7 @@ foreach ($events as $event) {
       $fp=fopen($event->getUserId(),'r');
       $myLocation=explode(',',fgets($fp));
 
-
+      //ユーザーIDリスト読み込み
       $fp=fopen('userIdList','r');
       //配列に全ユーザーIDを格納
       $userIdArray=explode(',',fgets($fp));
@@ -90,7 +91,8 @@ foreach ($events as $event) {
       //IDのそれぞれに対して位置情報を比較する
       foreach($userIdArray as $value){
         $fp2=fopen($value,'r');
-        replyTextMessage($bot,$event->getReplyToken(),fgets($fp2).' '.fgets($fp2));
+        $test=fgets($fp2).''.fgets($fp2);
+        replyTextMessage($bot,$event->getReplyToken(),$test);
         fclose($fp2);
 
         /*
