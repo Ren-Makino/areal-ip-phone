@@ -86,7 +86,7 @@ foreach ($events as $event) {
       //配列に全ユーザーIDを格納
       $userIdArray=explode(',',fgets($fp));
 
-      replyTextMessage($bot,$event->getReplyToken(),$userIdArray[0] .','. $userIdArray[1]);
+      replyTextMessage($bot,$event->getReplyToken(),$myLocation[0] .','. $myLocation[1]);
 
       /*
       //IDのそれぞれに対して位置情報を比較する
