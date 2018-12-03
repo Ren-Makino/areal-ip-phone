@@ -129,7 +129,7 @@ foreach ($events as $event) {
       $txt=fgets($fp);
       $txt2=fgets($fp);
       $txt3=fgets($fp);
-      replyTextMessage($bot,$event->getReplyToken(), $txt $txt2 $txt3);
+      replyTextMessage($bot,$event->getReplyToken(), $txt.''.$txt2.''.$txt3);
       fclose($fp);
     }
   }
