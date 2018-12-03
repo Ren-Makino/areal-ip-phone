@@ -108,7 +108,7 @@ foreach ($events as $event) {
     touch($file_name);
     $fp=fopen($file_name,'a');
     fwrite($fp,$latitude .','. $longitude ."\n");
-    fwrite($fp,'000-0000-0000');
+    fwrite($fp,'help me'."\n");
     //ここで２行目に書き込みたい
     fclose($fp);
     if (file_exists($file_name)){
