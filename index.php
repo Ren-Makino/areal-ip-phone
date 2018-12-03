@@ -85,10 +85,15 @@ foreach ($events as $event) {
       $fp=fopen('userIdList','r');
       //配列に全ユーザーIDを格納
       $userIdArray=explode(',',fgets($fp));
+
+      replyTextMessage($bot,$event->getReplyToken(),$userIdArray[0] .','. $userIdArray[1]);
+
+      /*
+      //IDのそれぞれに対して位置情報を比較する
       foreach($userIdArray as $value){
-        /*$fp2=fopen($value,'r');
+        //$fp2=fopen($value,'r');
         replyTextMessage($bot,$event->getReplyToken(),fgets($fp2).' '.fgets($fp2));
-        fclose($fp2);*/
+        fclose($fp2);
 
         $fp2=fopen($value,'r');
         $location=explode(',',fgets($fp2));
@@ -101,8 +106,8 @@ foreach ($events as $event) {
           replyTextMessage($bot,$event->getReplyToken(),$location[0].' '. $location[1].' '.fgets($fp2));
           $listKey++;
         }
-      }
-      fclose($fp);
+      }*/
+      //fclose($fp);
     }
   }
   if ($event instanceof \LINE\LINEBot\Event\MessageEvent\LocationMessage){
