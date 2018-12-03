@@ -97,16 +97,18 @@ foreach ($events as $event) {
     //replyTextMessage($bot, $event->getReplyToken(),$event->getAddress() . '[' . $event->getLatitude() . ' , ' . $event->getLongitude() .']');
     $latitude=round($event->getLatitude(),4,PHP_ROUND_HALF_EVEN);
     $longitude=round($event->getLongitude(),4,PHP_ROUND_HALF_EVEN);
-    $file_name = $event->getUserId();
+
     //ユーザーIDリストに追記
     $fp=fopen('userIdList','a');
-    fputs($fp,$event->getUserId());
+    fputs($fp,$event->getUserId()."\n");
     fclose($fp);
+
     //ユーザー個別ファイルに位置情報を記録
+    $file_name = $event->getUserId();
     touch($file_name);
-    $fp=fopen($file_name,'w');
+    $fp=fopen($file_name,'a');
     fwrite($fp,$latitude .','. $longitude ."\n");
-    fwrite($fp,'help me');
+    fwrite($fp,'000-0000-0000');
     //ここで２行目に書き込みたい
     fclose($fp);
     if (file_exists($file_name)){
