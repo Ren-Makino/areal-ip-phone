@@ -92,7 +92,8 @@ foreach ($events as $event) {
       foreach($userIdArray as $value){
         $fp2=fopen($value,'r');
         $garbage=fgets($fp2).''.fgets($fp2);
-        replyTextMessage($bot,$event->getReplyToken(),$garbage);
+        $txt=fgets($fp2);
+        replyTextMessage($bot,$event->getReplyToken(),$txt);
         fclose($fp2);
 
         /*
