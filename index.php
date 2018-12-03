@@ -54,7 +54,7 @@ foreach ($events as $event) {
       replyTextMessage($bot,$event->getReplyToken(),$testMessage);
       $file_name = $event->getUserId();
       $fp=fopen($file_name,'a');
-      fwrite($fp,$testMessage."\n");
+      fwrite($fp,$testMessage);
       fclose($fp);
 
 
@@ -129,7 +129,6 @@ foreach ($events as $event) {
     $fp=fopen($file_name,'a');
     fwrite($fp,$latitude .','. $longitude ."\n");
     fwrite($fp,'000-0000-0000'."\n");
-    fwrite($fp,'User1');
 
     /*
     //テスト用の疑似別ユーザーを登録
