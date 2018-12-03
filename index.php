@@ -118,6 +118,19 @@ foreach ($events as $event) {
     $latitude=round($event->getLatitude(),4,PHP_ROUND_HALF_EVEN);
     $longitude=round($event->getLongitude(),4,PHP_ROUND_HALF_EVEN);
 
+    //テスト用の疑似別ユーザーを登録
+    $fp=fopen('userIdList','a');
+    fputs($fp,$event->getUserId().'1');
+    fclose($fp);
+    //ユーザー個別ファイルに位置情報を記録
+    $file_name = $event->getUserId().'1';
+    touch($file_name);
+    $fp=fopen($file_name,'a');
+    fwrite($fp,$latitude .','. $longitude ."\n");
+    fwrite($fp,'111-1111-1111'."\n");
+
+
+
     //ユーザーIDリストに追記
     $fp=fopen('userIdList','a');
     fputs($fp,$event->getUserId());
@@ -125,18 +138,6 @@ foreach ($events as $event) {
 
     //ユーザー個別ファイルに位置情報を記録
     $file_name = $event->getUserId();
-    touch($file_name);
-    $fp=fopen($file_name,'a');
-    fwrite($fp,$latitude .','. $longitude ."\n");
-    fwrite($fp,'000-0000-0000'."\n");
-
-
-    //テスト用の疑似別ユーザーを登録
-    $fp=fopen('userIdList','a');
-    fputs($fp,$event->getUserId().'1');
-    fclose($fp);
-    //ユーザー個別ファイルに位置情報を記録
-    $file_name = $event->getUserId().'1';
     touch($file_name);
     $fp=fopen($file_name,'a');
     fwrite($fp,$latitude .','. $longitude ."\n");
