@@ -74,11 +74,11 @@ foreach ($events as $event) {
       replyTextMessage($bot,$event->getReplyToken(),$messageList[$listKey]);*/
 
       $fp=fopen('userIdList','a');
-      fputs($fp,','.$event->getUserId().'1');
+      fputs($fp,','.$event->getUserId());
       fclose($fp);
 
       //比較用に自分の位置情報を自分のユーザーIDから取得(テキストメッセージイベントではgetlatitudeが使用不可)
-      $fp=fopen($event->getUserId().'1','r');
+      $fp=fopen($event->getUserId(),'r');
       $myLocation=explode(',',fgets($fp));
 
 
