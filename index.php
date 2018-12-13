@@ -127,7 +127,7 @@ foreach ($events as $event) {
     touch($file_name);
     $fp=fopen($file_name,'a');
     fwrite($fp,$latitude .','. $longitude ."\n");
-    fwrite($fp,'111-1111-1111'."\n");
+    fwrite($fp,'111-1111-1111');
 
 
 
