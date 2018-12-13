@@ -54,7 +54,7 @@ foreach ($events as $event) {
       //replyTextMessage($bot,$event->getReplyToken(),$testMessage);
       $file_name = $event->getUserId();
       $fp=fopen($file_name,'a');
-      fwrite($fp,"\n".$testMessage);
+      fwrite($fp,$testMessage);
       fclose($fp);
       $fp=fopen($file_name,'r');
       $txt1=fgets($fp);
@@ -147,7 +147,7 @@ foreach ($events as $event) {
     touch($file_name);
     $fp=fopen($file_name,'a');
     fwrite($fp,$latitude .','. $longitude ."\n");
-    fwrite($fp,'000-0000-0000');
+    fwrite($fp,'000-0000-0000'."\n");
 
 
 
