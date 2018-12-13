@@ -60,7 +60,7 @@ foreach ($events as $event) {
       $txt1=fgets($fp);
       $txt2=fgets($fp);
       $txt3=fgets($fp);
-      replyTextMessage($bot,$event->getReplyToken(),$txt3);
+      replyTextMessage($bot,$event->getReplyToken(),$txt2);
       fclose($fp);
 
 
