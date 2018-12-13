@@ -117,7 +117,14 @@ foreach ($events as $event) {
         */
       }
       fclose($fp);
-    }
+    }else if(preg_match('/テスト2/',$event->getText())){
+      $file_name=$event->getUserID();
+      $fp=fopen($file_name,'r');
+      $txt1=fgets($fp);
+      $txt2=fgets($fp);
+      $txt3=fgets($fp);
+      replyTextMessage($bot,$event->getReplyToken(),$txt1);
+      fclose($fp);
   }
   if ($event instanceof \LINE\LINEBot\Event\MessageEvent\LocationMessage){
     //replyTextMessage($bot, $event->getReplyToken(),$event->getAddress() . '[' . $event->getLatitude() . ' , ' . $event->getLongitude() .']');
