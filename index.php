@@ -57,9 +57,10 @@ foreach ($events as $event) {
       fwrite($fp,$testMessage);
       fclose($fp);
       $fp=fopen($file_name,'r');
-      $garbage=fgets($fp).''.fgets($fp);
-      $txt=fgets($fp);
-      replyTextMessage($bot,$event->getReplyToken(),$txt);
+      $txt1=fgets($fp);
+      $txt2=fgets($fp);
+      $txt3=fgets($fp);
+      replyTextMessage($bot,$event->getReplyToken(),$txt3);
       fclose($fp);
 
 
