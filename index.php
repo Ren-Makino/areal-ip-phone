@@ -125,7 +125,9 @@ foreach ($events as $event) {
       $txt3=fgets($fp);
       replyTextMessage($bot,$event->getReplyToken(),$txt1);
       fclose($fp);
+    }
   }
+
   if ($event instanceof \LINE\LINEBot\Event\MessageEvent\LocationMessage){
     //replyTextMessage($bot, $event->getReplyToken(),$event->getAddress() . '[' . $event->getLatitude() . ' , ' . $event->getLongitude() .']');
     $latitude=round($event->getLatitude(),4,PHP_ROUND_HALF_EVEN);
