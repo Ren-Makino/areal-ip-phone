@@ -51,10 +51,15 @@ foreach ($events as $event) {
       */
 
       $testMessage = mb_substr($event->getText(),3);
-      replyTextMessage($bot,$event->getReplyToken(),$testMessage);
+      //replyTextMessage($bot,$event->getReplyToken(),$testMessage);
       $file_name = $event->getUserId();
       $fp=fopen($file_name,'a');
       fwrite($fp,$testMessage);
+      fclose($fp);
+      $fp=fopen($file_name,'r');
+      $garbage=fgets($fp).''.fgets($fp);
+      $txt=fgets($fp);
+      replyTextMessage($bot,$event->getReplyToken(),$txt);
       fclose($fp);
 
 
