@@ -144,8 +144,6 @@ foreach ($events as $event) {
     fwrite($fp,$latitude .','. $longitude ."\n");
     fwrite($fp,'111-1111-1111');
 
-
-
     //ユーザーIDリストに追記
     $fp=fopen('userIdList','a');
     fputs($fp,$event->getUserId());
