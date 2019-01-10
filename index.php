@@ -94,7 +94,7 @@ foreach ($events as $event) {
       $fp=fopen('userIdList','r');
       //配列に全ユーザーIDを格納
       $userIdArray=explode(',',fgets($fp));
-      replyTextMessage($bot,$event->getReplyToken(),$userIdArray[0].''.$userIdArray[1]);
+      //replyTextMessage($bot,$event->getReplyToken(),$userIdArray[0].''.$userIdArray[1]);
 
 
 
