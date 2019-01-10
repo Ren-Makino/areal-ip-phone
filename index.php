@@ -71,7 +71,7 @@ foreach ($events as $event) {
         $fp=fopen($file_name,'r');
         $txt=fgets($fp);
         $txt2=fgets($fp);
-        replyTextMessage($bot,$event->getReplyToken(),'位置情報'. "\n". '「'. $txt2.'」');
+        replyTextMessage($bot,$event->getReplyToken(),'メッセージ'. "\n". '「'. $txt2.'」');
         fclose($fp);
       }else{
         replyTextMessage($bot,$event->getReplyToken(),'位置情報が登録されていません。');
@@ -88,13 +88,17 @@ foreach ($events as $event) {
       //比較用に自分の位置情報を自分のユーザーIDから取得(テキストメッセージイベントではgetlatitudeが使用不可のため)
       $fp=fopen($event->getUserId(),'r');
       $myLocation=explode(',',fgets($fp));
+      fclose($fp);
 
       //ユーザーIDリスト読み込み
       $fp=fopen('userIdList','r');
       //配列に全ユーザーIDを格納
       $userIdArray=explode(',',fgets($fp));
+      replyTextMessage($bot,$event->getReplyToken(),$userIdArray[0].''.$userIdArray[1]);
 
 
+
+      /*
       //IDのそれぞれに対して位置情報を比較する
       foreach($userIdArray as $value){
         $fp2=fopen($value,'r');
@@ -103,7 +107,8 @@ foreach ($events as $event) {
         replyTextMessage($bot,$event->getReplyToken(),$txt);
         fclose($fp2);
 
-        /*
+
+
         $fp2=fopen($value,'r');
         $location=explode(',',fgets($fp2));
         //座標の差異が0.001以下ならば(100m以内ならば)
@@ -136,7 +141,7 @@ foreach ($events as $event) {
 
     //ユーザーIDリストに追記
     $fp=fopen('userIdList','a');
-    fputs($fp,$event->getUserId());
+    fputs($fp,$event->getUserId().',');
     fclose($fp);
 
     //ユーザー個別ファイルに位置情報を記録
