@@ -66,11 +66,12 @@ foreach ($events as $event) {
 
 
     }else if(preg_match('/確認/',$event->getText())){
-      $file_name = mb_substr($event->getText(),3,13).'.txt';
+      $file_name = $event->getUserId();
       if (file_exists($file_name)){
         $fp=fopen($file_name,'r');
         $txt=fgets($fp);
-        replyTextMessage($bot,$event->getReplyToken(),'位置情報'. "\n". '「'. $txt.'」');
+        $txt2=fgets($fp);
+        replyTextMessage($bot,$event->getReplyToken(),'位置情報'. "\n". '「'. $txt2.'」');
         fclose($fp);
       }else{
         replyTextMessage($bot,$event->getReplyToken(),'位置情報が登録されていません。');
