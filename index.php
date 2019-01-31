@@ -89,8 +89,8 @@ foreach ($events as $event) {
           $theirMessage=fgets($fp2);
           fclose($fp2);
 
-          if (abs($myLocation[0]-$theirLocation[0]))<0.001){
-            if(abs($myLocation[1]-$theirLocation[1]))<0.001){
+          if ( abs($myLocation[0]-$theirLocation[0]) < 0.001 ){
+            if( abs($myLocation[1]-$theirLocation[1]) < 0.001 ){
               replyTextMessage($bot,$event->getReplyToken(),$theirMessage);
             }
           }
