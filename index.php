@@ -84,8 +84,8 @@ foreach ($events as $event) {
         //IDのそれぞれに対して位置情報を比較する
         foreach($userIdArray as $value){
           $fp2=fopen($value,'r');
-          $txt=fgets($fp2);
-          replyTextMessage($bot,$event->getReplyToken(),$txt);
+          $theirLocation=explode(',',fgets($fp2));
+          replyTextMessage($bot,$event->getReplyToken(),$theirLocation[0].','.$theirLocation[1]);
           fclose($fp2);
 
 
