@@ -79,12 +79,8 @@ foreach ($events as $event) {
         $fp=fopen('userIdList','r');
         //配列に全ユーザーIDを格納
         $userIdArray=explode(',',fgets($fp));
-        replyTextMessage($bot,$event->getReplyToken(),$userIdArray[0].','.$userIdArray[1]);
+        fclose($fp);
 
-
-
-
-        /*
         //IDのそれぞれに対して位置情報を比較する
         foreach($userIdArray as $value){
           $fp2=fopen($value,'r');
@@ -106,8 +102,9 @@ foreach ($events as $event) {
             replyTextMessage($bot,$event->getReplyToken(),$location[0].' '. $location[1].' '.fgets($fp2));
             $listKey++;
           }
-          */
-          fclose($fp);
+        }
+
+
 
     }else if(preg_match('/test/',$event->getText())){
       $file_name=$event->getUserID();
