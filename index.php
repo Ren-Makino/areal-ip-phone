@@ -62,8 +62,9 @@ foreach ($events as $event) {
         $txt2=fgets($fp);
         replyTextMessage($bot,$event->getReplyToken(),'メッセージ'. "\n". '「'. $txt2.'」');
         fclose($fp);
-      }else{
-        replyTextMessage($bot,$event->getReplyToken(),'位置情報が登録されていません。');
+        }else{
+          replyTextMessage($bot,$event->getReplyToken(),'位置情報が登録されていません。');
+        }
       }else if(preg_match('/テスト/',$event->getText())){
         /*$messageList[$listKey]='help me';
         replyTextMessage($bot,$event->getReplyToken(),$messageList[$listKey]);*/
