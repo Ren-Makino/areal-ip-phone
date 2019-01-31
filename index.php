@@ -84,13 +84,12 @@ foreach ($events as $event) {
         //IDのそれぞれに対して位置情報を比較する
         foreach($userIdArray as $value){
           $fp2=fopen($value,'r');
-          $garbage=fgets($fp2);
           $txt=fgets($fp2);
           replyTextMessage($bot,$event->getReplyToken(),$txt);
           fclose($fp2);
 
 
-          /*
+
           $fp2=fopen($value,'r');
           $location=explode(',',fgets($fp2));
           //座標の差異が0.001以下ならば(100m以内ならば)
@@ -102,7 +101,6 @@ foreach ($events as $event) {
             replyTextMessage($bot,$event->getReplyToken(),$location[0].' '. $location[1].' '.fgets($fp2));
             $listKey++;
           }
-          */
         }
 
 
