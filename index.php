@@ -73,6 +73,7 @@ foreach ($events as $event) {
         //比較用に自分の位置情報を自分のユーザーIDから取得(テキストメッセージイベントではgetlatitudeが使用不可のため)
         $fp=fopen($event->getUserId(),'r');
         $myLocation=explode(',',fgets($fp));
+        $myId=$event->getUserId();
         fclose($fp);
 
         //ユーザーIDリスト読み込み
@@ -85,11 +86,16 @@ foreach ($events as $event) {
         foreach($userIdArray as $value){
           $fp2=fopen($value,'r');
           $theirLocation=explode(',',fgets($fp2));
-          replyTextMessage($bot,$event->getReplyToken(),$theirLocation[0].','.$theirLocation[1]);
+          $theirMessage=fgets($fp2);
           fclose($fp2);
 
+          if (abs($myLocation[0]-$theirLocation[0]))<0.001){
+            if(abs($myLocation[1]-$theirLocation[1]))<0.001){
+              replyTextMessage($bot,$event->getReplyToken(),$theirMessage);
+            }
+          }
 
-
+          /*
           $fp2=fopen($value,'r');
           $location=explode(',',fgets($fp2));
           //座標の差異が0.001以下ならば(100m以内ならば)
@@ -100,8 +106,9 @@ foreach ($events as $event) {
             //$messageList[$listKey]=fgets($fp);
             replyTextMessage($bot,$event->getReplyToken(),$location[0].' '. $location[1].' '.fgets($fp2));
             $listKey++;
-          }
+          */
         }
+
 
 
 
