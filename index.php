@@ -91,7 +91,9 @@ foreach ($events as $event) {
 
           if ( abs($myLocation[0]-$theirLocation[0]) < 0.001 ){
             if( abs($myLocation[1]-$theirLocation[1]) < 0.001 ){
-              replyTextMessage($bot,$event->getReplyToken(),$theirMessage);
+              if( $myId != $value){
+                replyTextMessage($bot,$event->getReplyToken(),$theirMessage);
+              }
             }
           }
 
