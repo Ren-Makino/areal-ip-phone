@@ -128,7 +128,7 @@ foreach ($events as $event) {
 
     //ユーザーIDリストに追記
     $fp=fopen('userIdList','a');
-    fputs($fp,$event->getUserId());
+    fputs($fp,$event->getUserId().',');
     fclose($fp);
 
     //ユーザー個別ファイルに位置情報を記録
