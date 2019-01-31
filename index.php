@@ -41,15 +41,6 @@ foreach ($events as $event) {
       replyImageMessage($bot, $event->getReplyToken(), 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/original.jpg', 'https://' . $_SERVER['HTTP_HOST'] . '/imgs/preview.jpg');
       $bot->replyText($event->getReplyToken(),'キーワード「被災状況」に関する情報を表示します。');
     }else if(preg_match('/登録/',$event->getText())){
-      /*
-      $file_name = mb_substr($event->getText(),3,13).'.txt';
-      touch($file_name);
-      $fp=fopen($file_name,'w');
-      fputs($fp,mb_substr($event->getText(),17));
-      fclose($fp);
-      replyTextMessage($bot,$event->getReplyToken(),'位置情報を登録しました' . "\n" . 'TEL：' . mb_substr($event->getText(),3,13) $file_name . "\n" . '座標：' . mb_substr($event->getText(),17));
-      */
-
       $testMessage = mb_substr($event->getText(),3);
       //replyTextMessage($bot,$event->getReplyToken(),$testMessage);
       $file_name = $event->getUserId();
@@ -63,8 +54,6 @@ foreach ($events as $event) {
       replyTextMessage($bot,$event->getReplyToken(),$txt2);
       fclose($fp);
 
-
-
     }else if(preg_match('/確認/',$event->getText())){
       $file_name = $event->getUserId();
       if (file_exists($file_name)){
@@ -75,54 +64,53 @@ foreach ($events as $event) {
         fclose($fp);
       }else{
         replyTextMessage($bot,$event->getReplyToken(),'位置情報が登録されていません。');
-      }
-    }else if(preg_match('/テスト/',$event->getText())){
-      /*$messageList[$listKey]='help me';
-      replyTextMessage($bot,$event->getReplyToken(),$messageList[$listKey]);*/
+      }else if(preg_match('/テスト/',$event->getText())){
+        /*$messageList[$listKey]='help me';
+        replyTextMessage($bot,$event->getReplyToken(),$messageList[$listKey]);*/
 
-      //ユーザーIDリストに追記
-      $fp=fopen('userIdList','a');
-      fputs($fp,','.$event->getUserId());
-      fclose($fp);
+        //ユーザーIDリストに追記
+        $fp=fopen('userIdList','a');
+        fputs($fp,','.$event->getUserId());
+        fclose($fp);
 
-      //比較用に自分の位置情報を自分のユーザーIDから取得(テキストメッセージイベントではgetlatitudeが使用不可のため)
-      $fp=fopen($event->getUserId(),'r');
-      $myLocation=explode(',',fgets($fp));
-      fclose($fp);
+        //比較用に自分の位置情報を自分のユーザーIDから取得(テキストメッセージイベントではgetlatitudeが使用不可のため)
+        $fp=fopen($event->getUserId(),'r');
+        $myLocation=explode(',',fgets($fp));
+        fclose($fp);
 
-      //ユーザーIDリスト読み込み
-      $fp=fopen('userIdList','r');
-      //配列に全ユーザーIDを格納
-      $userIdArray=explode(',',fgets($fp));
-      //replyTextMessage($bot,$event->getReplyToken(),$userIdArray[0].''.$userIdArray[1]);
-
-
-
-      /*
-      //IDのそれぞれに対して位置情報を比較する
-      foreach($userIdArray as $value){
-        $fp2=fopen($value,'r');
-        $garbage=fgets($fp2).''.fgets($fp2);
-        $txt=fgets($fp2);
-        replyTextMessage($bot,$event->getReplyToken(),$txt);
-        fclose($fp2);
+        //ユーザーIDリスト読み込み
+        $fp=fopen('userIdList','r');
+        //配列に全ユーザーIDを格納
+        $userIdArray=explode(',',fgets($fp));
+        //replyTextMessage($bot,$event->getReplyToken(),$userIdArray[0].''.$userIdArray[1]);
 
 
 
-        $fp2=fopen($value,'r');
-        $location=explode(',',fgets($fp2));
-        //座標の差異が0.001以下ならば(100m以内ならば)
-        //文字列で四則演算してるからダメ？
-        //if($myLocation[0]-$location[0]<0.001 $$ $myLocation[1]-$location[1]<0.001){
-        if($myLocation==$location){
-          //現在のユーザーIDのメッセージを配列に格納
-          //$messageList[$listKey]=fgets($fp);
-          replyTextMessage($bot,$event->getReplyToken(),$location[0].' '. $location[1].' '.fgets($fp2));
-          $listKey++;
-        }
-        */
-      }
-      fclose($fp);
+        /*
+        //IDのそれぞれに対して位置情報を比較する
+        foreach($userIdArray as $value){
+          $fp2=fopen($value,'r');
+          $garbage=fgets($fp2).''.fgets($fp2);
+          $txt=fgets($fp2);
+          replyTextMessage($bot,$event->getReplyToken(),$txt);
+          fclose($fp2);
+
+
+
+          $fp2=fopen($value,'r');
+          $location=explode(',',fgets($fp2));
+          //座標の差異が0.001以下ならば(100m以内ならば)
+          //文字列で四則演算してるからダメ？
+          //if($myLocation[0]-$location[0]<0.001 $$ $myLocation[1]-$location[1]<0.001){
+          if($myLocation==$location){
+            //現在のユーザーIDのメッセージを配列に格納
+            //$messageList[$listKey]=fgets($fp);
+            replyTextMessage($bot,$event->getReplyToken(),$location[0].' '. $location[1].' '.fgets($fp2));
+            $listKey++;
+          }
+          */
+          fclose($fp);
+
     }else if(preg_match('/test/',$event->getText())){
       $file_name=$event->getUserID();
       $fp=fopen($file_name,'r');
@@ -133,6 +121,7 @@ foreach ($events as $event) {
       fclose($fp);
     }
   }
+}
 
   if ($event instanceof \LINE\LINEBot\Event\MessageEvent\LocationMessage){
     //replyTextMessage($bot, $event->getReplyToken(),$event->getAddress() . '[' . $event->getLatitude() . ' , ' . $event->getLongitude() .']');
@@ -165,8 +154,7 @@ foreach ($events as $event) {
       fclose($fp);
     }
   }
-
-
+}
 
 // テキストを返信。引数はLINEBot、返信先、テキスト
 function replyTextMessage($bot, $replyToken, $text) {
