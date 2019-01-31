@@ -83,6 +83,7 @@ foreach ($events as $event) {
 
 
 
+
         /*
         //IDのそれぞれに対して位置情報を比較する
         foreach($userIdArray as $value){
