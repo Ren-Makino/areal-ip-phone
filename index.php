@@ -121,6 +121,9 @@ foreach ($events as $event) {
     //$latitude=round($event->getLatitude(),4,PHP_ROUND_HALF_EVEN);
     //$longitude=round($event->getLongitude(),4,PHP_ROUND_HALF_EVEN);
 
+    $latitude=$event->getLatitude();
+    $longitude=$event->getLongitude();
+
     //ユーザーIDリストに追記
     $fp=fopen('userIdList','a');
     fputs($fp,$event->getUserId().',');
