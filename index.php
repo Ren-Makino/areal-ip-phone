@@ -65,11 +65,7 @@ foreach ($events as $event) {
         }else{
           replyTextMessage($bot,$event->getReplyToken(),'位置情報が登録されていません。');
         }
-      }else if(preg_match('/テスト/',$event->getText())){
-        /*$messageList[$listKey]='help me';
-        replyTextMessage($bot,$event->getReplyToken(),$messageList[$listKey]);*/
-
-
+      }else if( preg_match('/メッセージ/',$event->getText()) || preg_match('/最近傍/',$event->getText()) ){
         //比較用に自分の位置情報を自分のユーザーIDから取得(テキストメッセージイベントではgetlatitudeが使用不可のため)
         $fp=fopen($event->getUserId(),'r');
         $myLocation=explode(',',fgets($fp));
@@ -81,28 +77,44 @@ foreach ($events as $event) {
         //配列に全ユーザーIDを格納
         $userIdArray=explode(',',fgets($fp));
         fclose($fp);
+        $closest=10;
 
         //IDのそれぞれに対して位置情報を比較する
-        foreach($userIdArray as $value){
-          $fp2=fopen($value,'r');
-          $theirLocation=explode(',',fgets($fp2));
-          $theirMessage=fgets($fp2);
-          fclose($fp2);
+        if(preg_match('/メッセージ/',$event->getText())){
+          foreach($userIdArray as $value){
+            $fp2=fopen($value,'r');
+            $theirLocation=explode(',',fgets($fp2));
+            $theirMessage=fgets($fp2);
+            fclose($fp2);
 
-          if ( abs($myLocation[0]-$theirLocation[0]) < 0.001 ){
-            if( abs($myLocation[1]-$theirLocation[1]) < 0.001 ){
-              if($myId != $value){
-                replyTextMessage($bot,$event->getReplyToken(),$theirMessage);
+            if ( abs($myLocation[0]-$theirLocation[0]) < 0.001 ){
+              if( abs($myLocation[1]-$theirLocation[1]) < 0.001 ){
+                if($myId != $value){
+                  replyTextMessage($bot,$event->getReplyToken(),$theirMessage);
+                }
               }
             }
           }
+        }
 
+        else if(preg_match('/最近傍/',$event->getText())){
+          foreach($userIdArray as $value){
+            $fp2=fopen($value,'r');
+            $theirLocation=explode(',',fgets($fp2));
+            $theirMessage=fgets($fp2);
+            fclose($fp2);
+
+            $diff = abs($myLocation[0]-$theirLocation[0]) + abs($myLocation[1]-$theirLocation[1];
+            if ($closest > $diff){
+              $closest = $diff;
+              $theirId=$value;
+            }
+          }
+          $fp2=fopen($theirId,'r');
+          $firstLine=fgets($fp2);
+          $secondLine=fgets($fp2);
+          replyTextMessage($bot,$event->getReplyToken(),$secondLine);
           /*
-          $fp2=fopen($value,'r');
-          $location=explode(',',fgets($fp2));
-          //座標の差異が0.001以下ならば(100m以内ならば)
-          //文字列で四則演算してるからダメ？
-          //if($myLocation[0]-$location[0]<0.001 $$ $myLocation[1]-$location[1]<0.001){
           if($myLocation==$location){
             //現在のユーザーIDのメッセージを配列に格納
             //$messageList[$listKey]=fgets($fp);
@@ -110,6 +122,7 @@ foreach ($events as $event) {
             $listKey++;
           */
         }
+
 
 
 
