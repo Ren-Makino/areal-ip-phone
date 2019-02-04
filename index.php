@@ -166,8 +166,7 @@ foreach ($events as $event) {
       $fp=fopen($file_name,'r');
       $txt=fgets($fp);
       $txt2=fgets($fp);
-      $txt3=fgets($fp);
-      replyTextMessage($bot,$event->getReplyToken(), $txt.''.$txt2.' '.$txt3);
+      replyTextMessage($bot,$event->getReplyToken(),'経度：'$latitude."\n". '緯度：'.$longitude);
       fclose($fp);
     }
   }
