@@ -105,7 +105,7 @@ foreach ($events as $event) {
             fclose($fp2);
 
             $diff = abs($myLocation[0]-$theirLocation[0]) + abs($myLocation[1]-$theirLocation[1]);
-            if ($closest > $diff){
+            if ($closest > $diff && $myId != $value){
               $closest = $diff;
               $theirId=$value;
             }
