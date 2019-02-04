@@ -113,7 +113,7 @@ foreach ($events as $event) {
           $fp2=fopen($theirId,'r');
           $firstLine=fgets($fp2);
           $secondLine=fgets($fp2);
-          replyTextMessage($bot,$event->getReplyToken(),$secondLine);
+          replyTextMessage($bot,$event->getReplyToken(),'最も近い位置にいるユーザーのメッセージを表示します'."\n".'「'.$secondLine.'」');
           /*
           if($myLocation==$location){
             //現在のユーザーIDのメッセージを配列に格納
