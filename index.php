@@ -104,7 +104,7 @@ foreach ($events as $event) {
             $theirMessage=fgets($fp2);
             fclose($fp2);
 
-            $diff = abs($myLocation[0]-$theirLocation[0]) + abs($myLocation[1]-$theirLocation[1];
+            $diff = abs($myLocation[0]-$theirLocation[0]) + abs($myLocation[1]-$theirLocation[1]);
             if ($closest > $diff){
               $closest = $diff;
               $theirId=$value;
