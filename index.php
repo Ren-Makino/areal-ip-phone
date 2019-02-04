@@ -51,7 +51,7 @@ foreach ($events as $event) {
       $txt1=fgets($fp);
       $txt2=fgets($fp);
       $txt3=fgets($fp);
-      replyTextMessage($bot,$event->getReplyToken(),$txt2);
+      replyTextMessage($bot,$event->getReplyToken(),'メッセージを登録しました'."\n".'「'.$txt2.'」');
       fclose($fp);
 
     }else if(preg_match('/確認/',$event->getText())){
